@@ -1,9 +1,37 @@
-# Ignore everything
-*
+.*.swp
+._*
+.DS_Store
+.git
+.npmignore
+.hg
+.npmrc
+.lock-wscript
+.svn
+.wafpickle-*
+config.gypi
+CVS
+npm-debug.log
+assets/
+dist/
+skin*/
+help.txt
+/hebspack-config.json
+plugins/
+# dependencies
+/node_modules
 
-# But not these files...
-!.gitignore
-!package-lock.json
-!package.json
-!cli.js
-!gulpfile.js
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
