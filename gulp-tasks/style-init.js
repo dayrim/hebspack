@@ -95,7 +95,8 @@ module.exports = function() {
                                     let fileContent = String(file.contents)
                                     let fontsUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.fontsFolder}\/)`, 'g');
                                     let imagesUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.imagesFolder}\/)`, 'g');
-                                    let relativeToSkin = new RegExp(`(?=\/${paths.src.skinsFolder})(.*)(?<=\/)`, 'g');
+                                    let relativeToSkin = new RegExp(`(?=\/skins)(.*)(?<=\/)`, 'g');
+                                    log(colors.red(dir.path))
                                     let replaceUrl = dir.path.match(relativeToSkin)[0]
 
                                     fileContent = fileContent.replace(fontsUrl, `${replaceUrl}${paths.src.fontsFolder}/`)
