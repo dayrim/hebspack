@@ -16,11 +16,8 @@ const log = require('fancy-log');
 const colors = require('ansi-colors');
 const path = require("path")
 const watch = require('gulp-watch');
-const del = require('del');
-const glob = require("glob") 
 const batch = require("gulp-batch")
 const configLoader = require('../common/config-loader');
-const fileSystem = require('fs')
 const notifier = require('node-notifier');
 
 

@@ -1,5 +1,4 @@
 const minimist = require("minimist");
-const appRoot = require('app-root-path');
 const colors = require('ansi-colors');
 const path = require("path")
 const watch = require('gulp-watch');

@@ -4,12 +4,8 @@ const minimist = require("minimist");
 const print = require('gulp-print').default;
 const colors = require('ansi-colors');
 const path = require("path")
-const appRoot = require('app-root-path');
 const configLoader = require('../common/config-loader');
-const glob = require("glob")
-const fileSystem = require("fs")
 const log = require('fancy-log');
-const tap = require('gulp-tap');
 const notifier = require('node-notifier');
 
 

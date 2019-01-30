@@ -3,8 +3,6 @@ const minimist = require("minimist");
 const colors = require('ansi-colors');
 const path = require("path")
 const log = require('fancy-log');
-const appRoot = require('app-root-path');
-const glob = require("glob")
 const tap = require("gulp-tap")
 const fileSystem = require("fs")
 

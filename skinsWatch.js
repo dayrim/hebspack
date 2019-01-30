@@ -2,18 +2,11 @@ const gulp = require('gulp');
 const appRoot = require('app-root-path');
 const fileSystem = require('fs');
 const minimist = require("minimist");
-const flatmap = require('gulp-flatmap');
-const gulpSequence = require('gulp-sequence')
-const print = require('gulp-print').default;
 const colors = require('ansi-colors');
 const path = require("path");
-const requireDir = require('require-dir');
-const tasks = requireDir('./gulp-tasks');
 const configLoader = require('./common/config-loader');
 const log = require('fancy-log');
 const watch = require('gulp-watch');
-const minimatch = require ('minimatch')
-const glob = require('glob')
 const { spawn } = require('child_process');
 
 let env;

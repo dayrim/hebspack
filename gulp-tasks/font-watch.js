@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const minimist = require("minimist");
-const appRoot = require('app-root-path');
 const print = require('gulp-print').default;
 const colors = require('ansi-colors');
 const path = require("path")
@@ -8,7 +7,6 @@ const watch = require('gulp-watch');
 const log = require('fancy-log');
 const del = require('del');
 const configLoader = require('../common/config-loader');
-const fileSystem = require('fs')
 const tap = require('gulp-tap')
 const notifier = require('node-notifier');
 

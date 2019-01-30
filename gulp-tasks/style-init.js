@@ -15,10 +15,7 @@ const minimatch = require("minimatch")
 const log = require('fancy-log');
 const colors = require('ansi-colors');
 const path = require("path")
-const appRoot = require('app-root-path');
 const configLoader = require('../common/config-loader');
-const glob = require("glob")
-const fileSystem = require("fs")
 const notifier = require('node-notifier');
 
 /* Set environment variable from cli flag*/

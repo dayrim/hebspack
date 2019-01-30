@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const minimist = require("minimist");
-const appRoot = require('app-root-path');
 const assetsJson = require('../custom-gulp-plugins/assets-json');
 const sourcemaps = require('gulp-sourcemaps');
 const gulpIf = require('gulp-if');
