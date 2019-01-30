@@ -11,13 +11,9 @@ const path = require("path")
 const order = require('gulp-order');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify-es').default;
-const appRoot = require('app-root-path');
 const configLoader = require('../common/config-loader');
-const glob = require("glob")
-const fileSystem = require("fs")
 const log = require('fancy-log');
 const notifier = require('node-notifier');
-const tap = require('gulp-tap');
 
 
 module.exports = function() {

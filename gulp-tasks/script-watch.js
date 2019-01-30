@@ -15,7 +15,6 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify-es').default;
 const del = require('del');
 const configLoader = require('../common/config-loader');
-const fileSystem = require('fs')
 const batch = require('gulp-batch');
 const tap = require('gulp-tap')
 const notifier = require('node-notifier');

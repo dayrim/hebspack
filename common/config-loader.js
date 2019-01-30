@@ -1,4 +1,4 @@
-const appRoot = require("app-root-path");
+
 const fileSystem = require("fs");
 const glob = require("glob");
 const log = require("fancy-log");

@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const lodashMerge = require('lodash/merge');
 const appRoot = require('app-root-path');
 const fileSystem = require('fs');
 const minimist = require("minimist");
@@ -16,13 +15,7 @@ const watch = require('gulp-watch');
 const minimatch = require ('minimatch')
 const glob = require('glob')
 const { spawn } = require('child_process');
-// var chokidar = require('chokidar');
 
-// chokidar.watch('skin*').on('addDir', (event, path) => {
-//   console.log(event, path);
-// });
-
-/* Set environment variable from cli flag*/
 let env;
 const args = minimist(process.argv.slice(2));
 
@@ -44,69 +37,12 @@ switch (args.env) {
         break;
 }
 
-function gulpExec(){
-    // if(typeof args.init ==='string' && !fileSystem.existsSync(`${appRoot.path}/${args.init}/`))
-    // {
-    //     log(colors.red('Invalid skin path'))
-    //     return
-    // }
-    
-    // configLoader.load(`${__dirname}/common/`)
-    
-    // gulp.task('config-init', tasks['config-init'])
-    
-    // gulp.task('image-init', tasks['image-init'])
-    // gulp.task('font-init', tasks['font-init'])
-    // gulp.task('script-init', tasks['script-init'])
-    // gulp.task('style-init', tasks['style-init'])
-    // gulp.task('php-plugins-init', tasks['php-plugins-init'])
-    
-    // gulp.task('style-watch', tasks['style-watch'])
-    // gulp.task('script-watch', tasks['script-watch'])
-    // gulp.task('image-watch', tasks['image-watch'])
-    // gulp.task('font-watch', tasks['font-watch'])
-    // gulp.task('php-plugins-watch', tasks['php-plugins-watch'])
-    
-    // let initTasks = []
-    // run[env].tasks.init.forEach(task => {
-    //     initTasks.push(task)
-    // });
-    
-    // gulp.task('initial-build', initTasks)
-    
-    // let watchTasks = []
-    // run[env].tasks.watch.forEach(task => {
-    //     watchTasks.push(task)
-    // });
-    
-    // gulp.task('watch', watchTasks)
-    
-    // gulp.task('tasks', function() {
-    //     if (args.init) return gulpSequence('initial-build','watch')
-    //     else return gulpSequence('watch')
-    // }())
-
-
-    // var watch =  gulp.parallel(tasks['style-watch'], tasks['script-watch'],tasks['image-watch'],tasks['font-watch'],tasks['php-plugins-watch'])
-    // var build = gulp.series(clean, gulp.parallel(styles, scripts))
-
-
-
-
-  
-        
-}
-
-gulpExec()
 
 
 gulp.task('skinsWatch', skinsWatch);
 
 function skinsWatch() {
 
-    /* Prepares skin path patterns to be watched */
-
-  
     
     if (!(appRoot.path.slice(-1) == `/`)) {
         appRoot.path = `${appRoot.path}/`
@@ -127,9 +63,6 @@ function skinsWatch() {
     let skinsFolder = skinsExist[0]
 
     if (`${appRoot.path}` !== `${skinsFolder}`) {
-
-        // restrictSkins = true
-        // skinPaths=(`${skinsFolder}skin*`)
 
         if (typeof args.init === 'string') {
             if (fileSystem.existsSync(`${skinsFolder}${args.init}`)) {
@@ -159,25 +92,7 @@ function skinsWatch() {
     skinPaths.push(`!**/node_modules/**/*`)
     skinPaths.push(`!**/master/**/*`)
 
-    // let restrictSkins = false
-    
 
-
-    // if (typeof args.init === 'string') {
-    //     if (fileSystem.existsSync(`${appRoot.path}/${args.init}/`)) {
-    //         skinPaths.push(`${appRoot.path}**/${args.init}`)
-    //     } else {
-    //         log(colors.red('Invalid skin path'))
-    //         return
-    //     }
-    // } else {
-    //     skinPaths.push(`${skinFolder}skin*`)
-    // }
-
-
-    log("Skin folder " + skinsFolder)
-    log("Skin paths " + skinPaths)
-    log("Approot paths " + appRoot.path)
 
     let skinsWatcher = watch(skinPaths, {
         ignoreInitial: false,
@@ -190,22 +105,9 @@ function skinsWatch() {
 
         configLoader.load(`${skinDirPath}`)
 
-        // if (typeof args.init === 'string'){
-        //     configLoader.create(`${skinDirPath}`, "gulpfile")
-        // }
-        // let config = configLoader.load(`${skinDirPath}`)
-
-        // if(config){config;}
-        // else{
-        //     skinsWatcher.unwatch(skinDirPath)
-        //     return 
-        // }
-
         let taskRunnerPath = path.join(__dirname, 'taskRunner.js')
 
-        // log(initTasks)
-        // initTasks.push(tasks['style-init'])
-        // allTasks = gulp.series(initTasks);
+
 
         let gulpCommands = './node_modules/.bin/gulp skinTasks'
 
@@ -217,8 +119,6 @@ function skinsWatch() {
         args.gulpfile=taskRunnerPath
         args.skinpath=skinDirPath
  
-        // args.skindir=skinDir.path
-
         Object.entries(args).forEach(entry => {
             let key = entry[0];
             let value = entry[1];
@@ -240,7 +140,6 @@ function skinsWatch() {
                 
             }
      
-            //use key and value here
         });
 
 
@@ -289,24 +188,3 @@ function processExists(array, searchKey) {
   else{ return false}
 }
 
-
-
-
-//   module.exports = (args) => {
-//     let gulpFile=path.join(__dirname, 'gulpfile.js')
-//     let gulpCommand;
-
-//     if (args._.indexOf("init") > -1) {
-//       if(args._[args._.indexOf("init")+1]){
-//         gulpCommand =`./node_modules/.bin/gulp tasks --gulpfile ${gulpFile} --cwd ${appRoot} --color=always --env=production --init=${args._[args._.indexOf("init")+1]}`;
-//       }
-//         else{
-//           gulpCommand =`./node_modules/.bin/gulp tasks  --gulpfile ${gulpFile} --cwd ${appRoot} --color=always --env=production --init`;
-//         }
-//     } else {
-//       gulpCommand =`./node_modules/.bin/gulp tasks  --gulpfile ${gulpFile} --cwd ${appRoot} --color=always --env=production`;
-//     }
-
-//     log(colors.magenta("Running production environment"))
-//     shell.exec(gulpCommand)
-//   }

@@ -1,5 +1,4 @@
 const shell = require("shelljs");
-const chalk = require("chalk")
 const path = require("path")
 const log = require('fancy-log');
 const appRoot = require('app-root-path');
