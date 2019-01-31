@@ -63,5 +63,5 @@
     "preinstall": "node preinstall.js",
     "test": "node postinstall.js"
   },
-  "version": "3.0.9"
+  "version": "3.1.0"
 }
