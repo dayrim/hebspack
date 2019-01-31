@@ -18,7 +18,7 @@ module.exports = function(paths, run, options) {
     ) {
         return 'Config error: Style files to bundle is required'
     }
-    else if(!paths.src.styleFiles.isArray()){
+    else if(!Array.isArray(paths.src.styleFiles)){
         return 'Config error: Style files needs to be an array'
     }
     if (
