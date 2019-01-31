@@ -79,12 +79,25 @@ function skinsWatch() {
 
     }
     else if (`${appRoot.path}` === `${skinsFolder}`){
+        if (typeof args.init === 'string') {
+            if (fileSystem.existsSync(`${skinsFolder}${args.init}`)) {
+
+                configLoader.create(`${skinsFolder}${args.init}`, "gulpfile")
+                skinPaths.push(`${skinsFolder}${args.init}/hebspack-config.json`)
+
+            } else {
+                log(colors.red(`${colors.red(`Skins directory: '${args.init}' does not exist`)}`))
+                return
+            }
+        }
+        else{
             skinPaths.push(`${skinsFolder}skin*/hebspack-config.json`)
+        }
+           
     }
 
     skinPaths.push(`!**/node_modules/**/*`)
     skinPaths.push(`!**/master/**/*`)
-
 
 
     let skinsWatcher = watch(skinPaths, {
@@ -116,7 +129,7 @@ function skinsWatch() {
             let key = entry[0];
             let value = entry[1];
             if(key !== '_'){
-                
+                log(colors.red(`${key} ${value}`))
                 switch (value) {
                     case true:
                     gulpCommands = `${gulpCommands} --${key}`
@@ -130,13 +143,11 @@ function skinsWatch() {
                     gulpCommands = `${gulpCommands} --${key}=${value}`
                         break;
                 }
-                
+            
             }
      
         });
 
-
-        
 
         const skinpath = args.skinpath
         const skindir = args.skindir
