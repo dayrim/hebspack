@@ -92,7 +92,7 @@ switch (args.env) {
                                     srcOrder.push(`${fileName}`);
                                 });
                             }
-                            options[env].script.extensions.foreach(extension=>{
+                            options[env].script.extensions.forEach(extension=>{
                                 srcOrder.push(`*${extension}`);
                             })
                           
