@@ -129,7 +129,6 @@ function skinsWatch() {
             let key = entry[0];
             let value = entry[1];
             if(key !== '_'){
-                log(colors.red(`${key} ${value}`))
                 switch (value) {
                     case true:
                     gulpCommands = `${gulpCommands} --${key}`
