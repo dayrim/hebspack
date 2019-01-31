@@ -14,7 +14,7 @@ function load(skinDirectory) {
             `${skinDirectory}/hebspack-config.json`
         );
         globalConfig = JSON.parse(rawData);
-        return ({ paths, constants, run, plugin,options } = globalConfig);
+        return ({ paths, run ,options } = globalConfig);
     }
     else {
         return false

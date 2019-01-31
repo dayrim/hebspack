@@ -87,7 +87,7 @@
         },
         "style":{  
            "sourcemaps":false,
-           "extractMedia":true,
+           "extractMedia":false,
            "cleanCSS":false,
            "autoprefixer":false
         }

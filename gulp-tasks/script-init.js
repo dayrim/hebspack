@@ -79,15 +79,23 @@ switch (args.env) {
                         /* Reorders files in stream */
                         .pipe(order(function() {
                             let srcOrder = [];
-                            paths.src.libFiles.forEach((fileName) => {
-                                srcOrder.push(`**/${fileName}`);
-                            });
+                            if(paths.src.libFiles){
+                                paths.src.libFiles.forEach((fileName) => {
+                                    srcOrder.push(`**/${fileName}`);
+                                });
+                            }
+
                             srcOrder.push(`${paths.src.libFolder}/*.js`);
                             srcOrder.push(`${paths.src.scriptsEntry}`);
-                            paths.src.scriptsFiles.forEach((fileName) => {
-                                srcOrder.push(`${fileName}`);
-                            });
-                            srcOrder.push(`*.js`);
+                            if(paths.src.scriptsFiles){
+                                paths.src.scriptsFiles.forEach((fileName) => {
+                                    srcOrder.push(`${fileName}`);
+                                });
+                            }
+                            options[env].script.extensions.foreach(extension=>{
+                                srcOrder.push(`*${extension}`);
+                            })
+                          
 
                             return srcOrder
                         }()))

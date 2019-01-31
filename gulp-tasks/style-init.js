@@ -46,13 +46,10 @@ module.exports = function() {
 
         /* Creates a stream for each skin */
         .pipe(flatmap(function(stream, skinDir) {
-           
-
             return gulp.src([`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}`, `!**/node_modules/**/*`, `!**/master/**/*`, `!**/${paths.dist.outputFolder}/**/*`])
 
                 /* Creates a stream for each style folder*/
                 .pipe(flatmap(function(stream, dir) {
-
                     /* Determines property directory*/
                     let propertyRegex = new RegExp(`.*(?=\/${paths.src.styleFolder})`, 'g');
                     let existingPropertyPath = dir.path.match(propertyRegex);
@@ -93,7 +90,7 @@ module.exports = function() {
                                     let fontsUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.fontsFolder}\/)`, 'g');
                                     let imagesUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.imagesFolder}\/)`, 'g');
                                     let relativeToSkin = new RegExp(`(?=\/skins)(.*)(?<=\/)`, 'g');
-                                    log(colors.red(dir.path))
+
                                     let replaceUrl = dir.path.match(relativeToSkin)[0]
 
                                     fileContent = fileContent.replace(fontsUrl, `${replaceUrl}${paths.src.fontsFolder}/`)

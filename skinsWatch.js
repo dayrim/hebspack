@@ -5,6 +5,7 @@ const minimist = require("minimist");
 const colors = require('ansi-colors');
 const path = require("path");
 const configLoader = require('./common/config-loader');
+const validateConfig = require('./common/validate-config');
 const log = require('fancy-log');
 const watch = require('gulp-watch');
 const { spawn } = require('child_process');
@@ -99,7 +100,6 @@ function skinsWatch() {
     skinPaths.push(`!**/node_modules/**/*`)
     skinPaths.push(`!**/master/**/*`)
 
-
     let skinsWatcher = watch(skinPaths, {
         ignoreInitial: false,
         read: true,
@@ -107,10 +107,13 @@ function skinsWatch() {
         events: ['add', 'change', 'unlink']
     }, (configFileObject) => {
         let skinDirPath = path.dirname(configFileObject.path)
-
-
         configLoader.load(`${skinDirPath}`)
-
+        let validateMessage = validateConfig(paths, run ,options )
+        if(validateMessage){
+            log(colors.red(validateMessage))
+            return
+        }
+        
         let taskRunnerPath = path.join(__dirname, 'taskRunner.js')
 
 
