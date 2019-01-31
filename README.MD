@@ -1,13 +1,19 @@
 
-# HEBSPACK 
+
 <p align="center">
     <img src="./favicon.png" >
 </p>
-Hebspack is a gulp configuration to bundle skin files for web development and distribution. It's meant to be installed and used from within 'skins' folder or any other subdirectory of 'skins'. Hebspack only bundles skins that have configured 'hebspack-config.json' in root directory.
+Hebspack is a gulp configuration to bundle skin files for web development and distribution. 
 
 ## Installation
 
-Assuming you have [Node](https://nodejs.org/en/) installed. First you need Navigate through terminal to a folder containing skin or skins and run this command to create package.json file with default settings:
+Hebspack is meant to be installed and used from within 'skins' folder or any other subdirectory of 'skins'. Hebspack only bundles skins that have configured 'hebspack-config.json' in root directory.
+
+### Installation steps:
+
+Assuming you have [Node](https://nodejs.org/en/) installed. 
+
+First you need Navigate through terminal to a folder containing skin or skins and run this command to create package.json file with default settings:
 
 ```bash
 npm init
