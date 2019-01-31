@@ -28,12 +28,11 @@ switch (args.env) {
         break;
 }
 
-
+configLoader.load(`${args.skinpath}`)
 function initTasks(done) {
     // log(colors.red(      JSON.stringify(args)))
     // log("Arguments "+colors.red(args.skinpath))
 
-    configLoader.load(`${args.skinpath}`)
     
     const tasks = run[env].tasks.init.map((taskName) => {
   
@@ -58,7 +57,7 @@ function initTasks(done) {
     // log(colors.red(      JSON.stringify(args)))
     // log("Arguments "+colors.red(args.skinpath))
 
-    configLoader.load(`${args.skinpath}`)
+    
     
     const tasks = run[env].tasks.watch.map((taskName) => {
   
@@ -86,11 +85,17 @@ function initTasks(done) {
   let skinTasks 
 
   if(args.init ){
-    skinTasks= gulp.series(initTasks);
+    if(run[env].tasks.init)
+    {    
+        skinTasks= gulp.series(initTasks);
+        gulp.task('skinTasks', skinTasks);
+        }
         
     }
     else{
-        skinTasks= gulp.series(watchTasks);
+        if(run[env].tasks.watch){
+            skinTasks= gulp.series(watchTasks)
+            gulp.task('skinTasks', skinTasks);
+        };
     }
 
-  gulp.task('skinTasks', skinTasks);

@@ -36,9 +36,9 @@ function writeManifestFile(data, manifestFile) {
         fs.mkdirSync(path.dirname(manifestFile), { recursive: true });
 
     }
+    let jsonData = JSON.stringify(data, null, 4)
 
-    fs.writeFileSync(manifestFile, JSON.stringify(data));
-    
+    fs.writeFileSync(manifestFile, jsonData);
 }
 
 function resetManifestFile(manifestFile) {
