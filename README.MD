@@ -9,7 +9,7 @@ Hebspack is a gulp configuration to bundle skin files for web development and di
 
 Hebspack is meant to be installed and used from within 'skins' folder or any other subdirectory of 'skins'. Hebspack only bundles skins that have configured 'hebspack-config.json' in root directory.
 
-### Installation steps:
+#### Installation steps:
 
 Assuming you have [Node](https://nodejs.org/en/) installed. 
 
@@ -83,6 +83,67 @@ This will run initial build, bundling all files for any skin containing configur
 npm run hebspack init skin-name
 ```
 This will run initial build, generating default 'hebspack-config.json' and bundling all files for only one skin in specified folder relative to 'skins'.
+
+## Custom Task Declaration
+
+Tasks that are stored in 'gulp-tasks' folder relative to skin directory will be executed along with default tasks specified in 'hebspack-config.json'. There are several ways to declare a task:
+
+#### Callback
+
+You can provide a callback parameter to your task’s function and then call it when the task is complete:
+```js
+const del = require('del');
+
+module.exports = function(done) {
+    del(['.build/'], done);
+});
+```
+
+#### Return a Stream
+
+You can also return a stream, usually made via gulp.src or even by using the vinyl-source-stream package directly. This will likely be the most common way of doing things.
+```js
+const del = require('del');
+
+module.exports = function() {
+    return gulp.src('client/**/*.js')
+        .pipe(minify())
+        .pipe(gulp.dest('build'));
+});
+```
+
+#### Return a Promise
+
+Return a promise and Gulp will know when it’s finished:
+```js
+const promisedDel = require('promised-del');
+
+module.exports = function() {
+    return promisedDel(['.build/']);
+});
+```
+
+#### Return a Child Process
+
+You can spawn child processes and just return them as well!
+ ```js
+const spawn = require('child_process').spawn;
+
+module.exports = function() {
+    return spawn('rm', ['-rf', path.join(__dirname, 'build')]);
+});
+```
+
+#### Return a RxJS observable
+
+It's also possible to return an RxJS observable.
+ ```js
+const Observable = require('rx').Observable;
+
+module.exports = function() {
+    return Observable.return(42);
+});
+```
 
 ## Default config explanation
 
