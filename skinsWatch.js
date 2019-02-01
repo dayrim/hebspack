@@ -32,7 +32,6 @@ switch (args.env) {
 }
 
 
-
 gulp.task('skinsWatch', skinsWatch);
 
 function skinsWatch() {
@@ -42,7 +41,6 @@ function skinsWatch() {
         appRoot.path = `${appRoot.path}/`
     }
     
- 
 
     let skinsRegex = new RegExp(`.*(?<=\/skins\/)`, 'g');
     let skinsExist = appRoot.path.match(skinsRegex)

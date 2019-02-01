@@ -2,10 +2,9 @@ const gulp = require('gulp');
 const minimist = require("minimist");
 const colors = require('ansi-colors');
 const requireDir = require('require-dir');
-const importedTasks = requireDir('./gulp-tasks');
 const configLoader = require('./common/config-loader');
 const log = require('fancy-log');
-
+const fileSystem = require('fs');
 
 let env;
 const args = minimist(process.argv.slice(2));
@@ -28,7 +27,26 @@ switch (args.env) {
         break;
 }
 
+let importedTasks;
+let customTasks;
+let defaultTasks = requireDir('./gulp-tasks');
+
+if (fileSystem.existsSync(`${args.skinpath}/gulp-tasks`)) {
+     customTasks = requireDir(`${args.skinpath}/gulp-tasks`);
+}
+
 configLoader.load(`${args.skinpath}`)
+
+if(customTasks !== defaultTasks){
+    importedTasks = {...customTasks, ...defaultTasks}
+}
+else{
+    importedTasks = defaultTasks;
+}
+
+
+
+
 function initTasks(done) {
     // log(colors.red(      JSON.stringify(args)))
     // log("Arguments "+colors.red(args.skinpath))
