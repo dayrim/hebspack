@@ -1,0 +1,242 @@
+{  
+  "paths":{  
+     "src":{  
+        "sourceFolder":"assets",
+        "styleFolder":"styles",
+        "styleFiles":[  
+           "promotiles.scss",
+           "styles.scss",
+           "test.scss",
+           "initial/styles.scss"
+        ],
+        "scriptsFolder":"scripts",
+        "libFiles":[  
+           "_jquery.js",
+           "_jquery.ui.js",
+           "_cookie.js",
+           "_json.js",
+           "_what-input.min.js",
+           "_validation.js",
+           "_validation-en.js",
+           "_hebs.bp.js",
+           "_swiper.js",
+           "_galleria.js",
+           "_variables.js",
+           "_polyfills.js",
+           "_ada.js"
+        ],
+        "libFolder":"libraries",
+        "scriptsEntry":"scripts.js",
+        "scriptsFiles":[  
+           "_common.js",
+           "_booking.js",
+           "_photos.js",
+           "_promotiles.js",
+           "_events.js",
+           "_reviews.js",
+           "_google-maps.js",
+           "_maps.js",
+           "_poi.js",
+           "_galleries.js",
+           "_pressroom.js",
+           "_rooms.js",
+           "_feeds.js",
+           "_calendar.js"
+        ],
+        "ignoreSuffix":"scripts.min.js",
+        "imagesFolder":"images",
+        "fontsFolder":"fonts",
+        "pluginsFolder":"plugins"
+     },
+     "dist":{  
+        "outputFolder":"dist",
+        "styleFolder":"styles",
+        "scriptsFolder":"scripts",
+        "outputScript":"scripts.min.js",
+        "imagesFolder":"images",
+        "fontsFolder":"fonts"
+     }
+  },
+  "run":{  
+     "default":{  
+        "tasks":{
+            "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
+            "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+        },
+        "script":{  
+           "sourcemaps":false,
+           "uglify":false,
+           "stripDebug":false
+        },
+        "style":{  
+           "sourcemaps":false,
+           "autoprefixer":false,
+           "extractMedia":false,
+           "cleanCSS":false
+        }
+     },
+     "development":{  
+         "tasks":{
+            "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
+            "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+      },
+        "script":{  
+           "sourcemaps":false,
+           "uglify":false,
+           "stripDebug":false
+        },
+        "style":{  
+           "sourcemaps":false,
+           "extractMedia":false,
+           "cleanCSS":false,
+           "autoprefixer":false
+        }
+     },
+     "production":{  
+         "tasks":{
+            "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
+            "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+      },
+        "script":{  
+           "sourcemaps":true,
+           "uglify":true,
+           "stripDebug":true
+        },
+        "style":{  
+           "sourcemaps":true,
+           "extractMedia":false,
+           "cleanCSS":true,
+           "autoprefixer":true
+        }
+     }
+  },
+  "options":{  
+     "default":{  
+
+        "script":{  
+         "extensions": [".js"],
+           "uglify":{  
+              "mangle":false,
+              "compress":false
+           }
+        },
+        "style":{  
+         "extensions": [".scss"],
+           "cleanCSS":{  
+              "sourcemaps":true,
+              "level":{  
+                 "1":{  
+                    "removeQuotes":false
+                 },
+                 "2":{  
+
+                 }
+              },
+              "compatibility":{  
+                 "properties":{  
+                    "urlQuotes":true
+                 }
+              }
+           },
+           "autoprefixer":{  
+              "browsers":[  
+                 "last 2 versions"
+              ],
+              "cascade":false
+           }
+        },
+        "php_plugin":{
+            "extensions": [".php"]
+         },
+        "image":{
+            "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
+        },
+        "fonts":{
+         "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+      }
+     },
+     "development":{  
+    
+        "script":{  
+         "extensions": [".js"],
+           "uglify":{  
+              "mangle":false,
+              "compress":false
+           }
+        },
+        "style":{  
+         "extensions": [".scss"],
+           "cleanCSS":{  
+              "sourcemaps":true,
+              "level":{  
+                 "1":{  
+                    "removeQuotes":false
+                 },
+                 "2":{  
+                 }
+              },
+              "compatibility":{  
+                 "properties":{  
+                    "urlQuotes":true
+                 }
+              }
+           },
+           "autoprefixer":{  
+              "browsers":[  
+                 "last 2 versions"
+              ],
+              "cascade":false
+           }
+        },
+        "image":{
+            "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
+        },
+        "font":{
+         "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+      },
+      "php_plugin":{
+          "extensions": [".php"]
+       }
+     },
+     "production":{  
+        "script":{  
+         "extensions": [".js"],
+           "uglify":{  
+              "mangle":false,
+              "compress":false
+           }
+        },
+        "style":{  
+           "extensions": [".scss"],
+           "cleanCSS":{  
+              "sourcemaps":true,
+              "level":{  
+                 "1":{  
+                    "removeQuotes":false
+                 }
+              },
+              "compatibility":{  
+                 "properties":{  
+                    "urlQuotes":true
+                 }
+              }
+           },
+           "autoprefixer":{  
+              "browsers":[  
+                 "last 2 versions"
+              ],
+              "cascade":false
+           }
+        },
+        "image":{
+            "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
+        },
+        "font":{
+         "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+      },
+      "php_plugin":{
+          "extensions": [".php"]
+       }
+     }
+  }
+}
