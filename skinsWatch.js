@@ -104,6 +104,9 @@ function skinsWatch() {
         verbose: false,
         events: ['add', 'change', 'unlink']
     }, (configFileObject) => {
+        if(configFileObject.event ==='unlink'){
+            skinsWatcher.unwatch(configFileObject.path)
+        }
         let skinDirPath = path.dirname(configFileObject.path)
         configLoader.load(`${skinDirPath}`)
         let validateMessage = validateConfig(paths, run ,options )
@@ -120,12 +123,19 @@ function skinsWatch() {
 
         let skinNameRegex = new RegExp(`([^\/]*)$`, 'g');
         let skinDir = `${skinDirPath.match(skinNameRegex)}`
-
+        let iconPath = function(){
+            
+            if (fileSystem.existsSync(`${skinDirPath}/codekit-icon.png`)) {
+                return `${skinDirPath}/codekit-icon.png`
+            }
+            return `${__dirname}/favicon.png`
+        }()
 
         args.skindir = skinDir.slice(0, -1);
         args.gulpfile=taskRunnerPath
         args.skinpath=skinDirPath
- 
+        args.iconpath=iconPath
+
         Object.entries(args).forEach(entry => {
             let key = entry[0];
             let value = entry[1];

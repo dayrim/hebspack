@@ -93,7 +93,7 @@ module.exports = function() {
                 let sourceStylesRegex = new RegExp(`.*(?<=\/${paths.src.styleFolder}\/)`, 'g')
                 let sourceDirRegex = new RegExp(`\/${paths.src.sourceFolder}\/`, 'g');
                 let propertyDirRegex = new RegExp(`.*(?<=\/${paths.src.sourceFolder}\/).*?(?=\/)`, 'g');
-                let relativeToSkinRegex = new RegExp(`(?=\/skins)(.*)(?<=\/)`, 'g');
+                let relativeToSkinRegex = new RegExp(`(?=\/${paths.src.sourceFolder})(.*)`, 'g');
 
                 let propertyDir = inputFile.path.match(propertyDirRegex)[0]
                 let sourceStyles = inputFile.path.match(sourceStylesRegex)[0]
@@ -135,21 +135,21 @@ module.exports = function() {
                     })
 
                     /* Replaces paths inside inline css */
-                    .pipe(tap(function(file) {
-                        if (minimatch(file.path, `**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}/initial/styles.css`)) {
-                            if (file.isBuffer()) {
-                                let fileContent = String(file.contents)
+                    // .pipe(tap(function(file) {
+                    //     if (minimatch(file.path, `**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}/initial/styles.css`)) {
+                    //         if (file.isBuffer()) {
+                    //             let fileContent = String(file.contents)
 
-                                let fontsUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.fontsFolder}\/)`, 'g');
-                                let imagesUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.imagesFolder}\/)`, 'g');
+                    //             let fontsUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.fontsFolder}\/)`, 'g');
+                    //             let imagesUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.imagesFolder}\/)`, 'g');
 
-                                fileContent = fileContent.replace(fontsUrl, `${relativeToSkin}${paths.src.fontsFolder}/`)
-                                fileContent = fileContent.replace(imagesUrl, `${relativeToSkin}${paths.src.imagesFolder}/`)
+                    //             fileContent = fileContent.replace(fontsUrl, `${relativeToSkin}/${paths.src.fontsFolder}/`)
+                    //             fileContent = fileContent.replace(imagesUrl, `${relativeToSkin}/${paths.src.imagesFolder}/`)
 
-                                file.contents = Buffer.from(fileContent);
-                            }
-                        }
-                    }))
+                    //             file.contents = Buffer.from(fileContent);
+                    //         }
+                    //     }
+                    // }))
 
                     /* Extracts media styles in seperate files*/
                     .pipe(gulpIf(run[env].style.extractMedia, extractMedia({
@@ -281,7 +281,7 @@ module.exports = function() {
                         notifier.notify({
                             title: 'Hebspack',
                             message: `Styles bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
-                            icon: path.join(path.join(__dirname, "../"), 'favicon.png'), // Absolute path (doesn't work on balloons)
+                            icon: args.iconpath, // Absolute path (doesn't work on balloons)
                         });
 
                     })

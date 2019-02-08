@@ -23,7 +23,7 @@ Then run this command to download and install hebspack package
 ```bash
 npm install hebspack
 ```
-
+#### Migrating from Code Kit:
 Insert the following line in head tag inside a skin's root .tpl file instead of existing asset links. Manifest path is relative to skin directory, for example "dist/desktop/assets.manifest.json" and is generated after bundling.
 ```php
 {asset_loader position="head" manifest="path/to/assets.manifest.json"}
@@ -38,6 +38,10 @@ Generate default 'hebspack-config.json' and run initial build in a specified ski
 ```bash
 npm run hebspack init skin-name
 ```
+
+Copy @codekit-prepend file names which are written in main "scripts.js" or similiar entry point. Paste these file names in hebspack-config.json replacing libFiles array elements to ensure the order of script loading is correct. 
+
+Copy @codekit-prepend file names which are written in main "scripts.js" or similiar entry point. Paste these file names in hebspack-config.json replacing scriptsFiles array elements to ensure the order of script loading is correct. 
 
 ## Bundler commands
 

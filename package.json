@@ -59,10 +59,10 @@
   },
   "scripts": {
     "gulp": "gulp --color=always",
-    "hebspack": "node exec.js",
+    "hebspack": "hebspack",
     "postinstall": "node postinstall.js",
     "preinstall": "node preinstall.js",
     "test": "node postinstall.js"
   },
-  "version": "3.2.3"
+  "version": "3.2.6"
 }

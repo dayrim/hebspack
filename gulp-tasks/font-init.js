@@ -67,22 +67,16 @@ configLoader.load(args.skinpath)
                         .pipe(print(filePath => `Finished '(${colors.cyan(args.skindir)}) stream for file:  ${colors.unstyle(path.dirname(filePath))}/${colors.blue(path.basename(filePath))}'`))
 
                 }))
-                .on('end', function() {
-                    if(lastFileObject){
-                        let propertyDirOutRegex = new RegExp(`.*(?<=\/${paths.dist.outputFolder}\/).*?(?=\/)`, 'g');
-                        let propertyDirDist = lastFileObject.path.match(propertyDirOutRegex)[0]
-            
-                        log(`Finished '(${colors.cyan(args.skindir)}) fonts bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
-            
-                        notifier.notify({
-                            title: 'Hebspack',
-                            message: `Scripts bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
-                            icon: path.join(path.join(__dirname, "../"),'favicon.png'), // Absolute path (doesn't work on balloons)
-                        });
-                    }
+       
+        })).on('end', function() {
 
-        
-                })
-        }))
+            log(`Finished '(${colors.cyan(args.skindir)}) fonts bundle'`);
+            notifier.notify({
+                title: 'Hebspack',
+                message: `Fonts bundled in ${args.skindir}`,
+                icon: args.iconpath,
+            });
+
+        })
 
 }

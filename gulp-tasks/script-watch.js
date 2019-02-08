@@ -185,7 +185,7 @@ module.exports = function() {
                         notifier.notify({
                             title: 'Hebspack',
                             message: `Scripts bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
-                            icon: path.join(path.join(__dirname, "../"),'favicon.png'), // Absolute path (doesn't work on balloons)
+                            icon: args.iconpath,
                         });
 
                     })

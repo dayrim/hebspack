@@ -90,7 +90,7 @@ configLoader.load(`${args.skinpath}`)
                 notifier.notify({
                     title: 'Hebspack',
                     message: `Image bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
-                    icon: path.join(path.join(__dirname, "../"), 'favicon.png'), 
+                    icon: args.iconpath,
                 });
             }))
 

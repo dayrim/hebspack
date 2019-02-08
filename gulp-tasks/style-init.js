@@ -46,6 +46,7 @@ module.exports = function() {
 
         /* Creates a stream for each skin */
         .pipe(flatmap(function(stream, skinDir) {
+
             return gulp.src([`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}`, `!**/node_modules/**/*`, `!**/master/**/*`, `!**/${paths.dist.outputFolder}/**/*`])
 
                 /* Creates a stream for each style folder*/
@@ -83,23 +84,22 @@ module.exports = function() {
                         })
 
                         /* Replaces paths inside inline css */
-                        .pipe(tap(function(file) {
-                            if (minimatch(file.path, `**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}/initial/styles.css`)) {
-                                if (file.isBuffer()) {
-                                    let fileContent = String(file.contents)
-                                    let fontsUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.fontsFolder}\/)`, 'g');
-                                    let imagesUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.imagesFolder}\/)`, 'g');
-                                    let relativeToSkin = new RegExp(`(?=\/skins)(.*)(?<=\/)`, 'g');
+                        // .pipe(tap(function(file) {
+                        //     if (minimatch(file.path, `**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}/initial/styles.css`)) {
+                        //         if (file.isBuffer()) {
+                        //             let fileContent = String(file.contents)
+                        //             let fontsUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.fontsFolder}\/)`, 'g');
+                        //             let imagesUrl = new RegExp(`(?<=url\\(\\"|\\')(.*?)(?<=\/${paths.src.imagesFolder}\/)`, 'g');
+                        //             let relativeToSkin = new RegExp(`(?=${paths.src.sourceFolder})(.*)`, 'g');
 
-                                    let replaceUrl = dir.path.match(relativeToSkin)[0]
+                        //             // let replaceUrl = propertyDirectory.match(relativeToSkin)[0]
+                        //             // fileContent = fileContent.replace(fontsUrl, `${replaceUrl}/${paths.src.fontsFolder}/`)
+                        //             // fileContent = fileContent.replace(imagesUrl, `${replaceUrl}/${paths.src.imagesFolder}/`)
 
-                                    fileContent = fileContent.replace(fontsUrl, `${replaceUrl}${paths.src.fontsFolder}/`)
-                                    fileContent = fileContent.replace(imagesUrl, `${replaceUrl}${paths.src.imagesFolder}/`)
-
-                                    file.contents = Buffer.from(fileContent);
-                                }
-                            }
-                        }))
+                        //             file.contents = Buffer.from(fileContent);
+                        //         }
+                        //     }
+                        // }))
 
                         /* Extract smedia styles in seperate files*/
                         .pipe(gulpIf(run[env].style.extractMedia, extractMedia({
@@ -235,14 +235,18 @@ module.exports = function() {
                         .on('end', function() {
 
                             log(`Finished '(${colors.cyan(args.skindir)}) style bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
-                            notifier.notify({
-                                title: 'Hebspack',
-                                message: `Styles bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
-                                icon: path.join(path.join(__dirname, "../"), 'favicon.png'), // Absolute path (doesn't work on balloons)
-                            });
 
                         })
 
+
                 }))
-        }))
+        })).on('end', function() {
+
+            notifier.notify({
+                title: 'Hebspack',
+                message: `Styles bundled in ${args.skindir}`,
+                icon: args.iconpath,
+            });
+
+        })
 };
