@@ -33,7 +33,7 @@ function writeManifestFile(data, manifestFile) {
 
     if (!fs.existsSync(path.dirname(manifestFile))){
 
-        fs.mkdirSync(path.dirname(manifestFile), { recursive: true });
+        fs.mkdirSync(path.dirname(manifestFile), { recursive: true }, err => {});
 
     }
     let jsonData = JSON.stringify(data, null, 4)

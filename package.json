@@ -9,6 +9,8 @@
     "url": "https://github.com/dayrim/hebspack/issues"
   },
   "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
     "ansi-colors": "^3.2.3",
     "app-root-path": "^2.1.0",
     "browser-sync": "^2.26.3",
@@ -41,7 +43,9 @@
     "rework-move-media": "0.0.5",
     "rework-split-media": "0.0.1",
     "shelljs": "^0.8.3",
-    "through2": "^3.0.0"
+    "through2": "^3.0.0",
+    "webpack": "^4.29.3",
+    "webpack-stream": "^5.2.1"
   },
   "deprecated": false,
   "description": "Hebspack is a gulp configuration to bundle skin files for web development and distribution.",
@@ -64,5 +68,5 @@
     "preinstall": "node preinstall.js",
     "test": "node postinstall.js"
   },
-  "version": "3.2.6"
+  "version": "3.2.8"
 }

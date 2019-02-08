@@ -26,7 +26,7 @@ npm install hebspack
 #### Migrating from Code Kit:
 Generate default 'hebspack-config.json' and run initial build in a specified skin by running.
 ```bash
-npm run hebspack init skin-name
+npm run hebspack default init skin-name
 ```
 
 Insert the following line in head tag inside a skin's root .tpl file instead of existing asset links. Manifest path is relative to skin root directory, for example "dist/desktop/assets.manifest.json". The argument paths_to_replace is meant to replace relative paths inside css with absolute paths and needs to be sent a portion relative to skin root directory.
@@ -36,7 +36,7 @@ Insert the following line in head tag inside a skin's root .tpl file instead of 
 
 Insert the following line in body tag inside a skin's root .tpl file instead of existing asset links. Manifest path is relative to skin root directory, for example "dist/desktop/assets.manifest.json"
 ```php
-{asset_loader position="body" manifest="path/to/assets.manifest.json"}
+{asset_loader position="body" manifest="dist/desktop/assets.manifest.json"}
 ```
 
 Copy @codekit-prepend file names which are written in main "scripts.js" or similiar entry point. Paste these file names in hebspack-config.json replacing libFiles array elements to ensure the order of script loading is correct. 
