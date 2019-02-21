@@ -55,7 +55,6 @@ function loadHebspack(packageJsonDir) {
 }
 
 function create(skinPaths,source) {
-
     if (Array.isArray(skinPaths)) {
         if (skinPaths.length === 1) {
             skinPaths = glob.sync(skinPaths[0]);

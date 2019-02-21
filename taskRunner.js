@@ -67,7 +67,6 @@ function initTasks(done) {
   }
   
   function watchTasks(done) {
-
     const tasks = run[env].tasks.watch.map((taskName) => {
   
       // Right here, we return a function per country
