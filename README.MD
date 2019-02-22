@@ -84,7 +84,7 @@ Paste these file names in 'hebspack-config.json' replacing 'libFiles' array elem
 ],
 ...
 ```
-- Copy @codekit-prepend file names which are written in main "scripts.js" or similiar entry point. Paste these file names in hebspack-config.json replacing scriptsFiles array elements to ensure the order of script loading is correct. 
+- Copy @codekit-append file names from "scripts.js" or similiar entry point. 
 ```js
 // @codekit-append "_common.js", "_booking.js", "_photos.js", "_promotiles.js", "_events.js", "_reviews.js", "_google-maps.js", "_maps.js", "_poi.js", "_galleries.js", "_pressroom.js", "_rooms.js", "_venues.js", "_feeds.js", "_calendar.js";
 ```

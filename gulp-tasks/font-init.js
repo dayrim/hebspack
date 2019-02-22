@@ -66,9 +66,10 @@ configLoader.loadSkin(args.skinpath)
                         }))
                         .pipe(print(filePath => `Finished '(${colors.cyan(args.skindir)}) stream for file:  ${colors.unstyle(path.dirname(filePath))}/${colors.blue(path.basename(filePath))}'`))
                         .on('end', function() {
+                            let propertyDirOutRegex = new RegExp(`.*(?<=\/${paths.dist.outputFolder}\/).*?(?=\/)`, 'g');
+                            let propertyDirDist = lastFileObject.path.match(propertyDirOutRegex)[0]
 
-                            log(`Finished '(${colors.cyan(args.skindir)}) fonts bundle'`);
-
+                            log(`Finished '(${colors.cyan(args.skindir)}) fonts bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
                         })
                 }))
        

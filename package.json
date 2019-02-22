@@ -68,5 +68,5 @@
     "postinstall": "node postinstall.js",
     "test": "node postinstall.js"
   },
-  "version": "3.5.5"
+  "version": "3.5.7"
 }
