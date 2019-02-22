@@ -58,185 +58,203 @@
      }
   },
   "run":{  
-     "default":{  
-        "tasks":{
-            "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
-            "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
-        },
-        "script":{  
-           "sourcemaps":false,
-           "uglify":false,
-           "stripDebug":false
-        },
-        "style":{  
-           "sourcemaps":false,
-           "autoprefixer":false,
-           "extractMedia":false,
-           "cleanCSS":false
-        }
-     },
-     "development":{  
-         "tasks":{
-            "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
-            "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+   "default":{  
+      "tasks":{
+          "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
+          "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
       },
-        "script":{  
-           "sourcemaps":false,
-           "uglify":false,
-           "stripDebug":false
-        },
-        "style":{  
-           "sourcemaps":false,
-           "extractMedia":false,
-           "cleanCSS":false,
-           "autoprefixer":false
-        }
-     },
-     "production":{  
-         "tasks":{
-            "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
-            "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+      "script":{  
+         "sourcemaps":false,
+         "uglify":false,
+         "stripDebug":false,
+         "babel": true
       },
-        "script":{  
-           "sourcemaps":true,
-           "uglify":true,
-           "stripDebug":true
-        },
-        "style":{  
-           "sourcemaps":true,
-           "extractMedia":false,
-           "cleanCSS":true,
-           "autoprefixer":true
-        }
-     }
-  },
-  "options":{  
-     "default":{  
-
-        "script":{  
-         "extensions": [".js"],
-           "uglify":{  
-              "mangle":false,
-              "compress":false
-           }
-        },
-        "style":{  
-         "extensions": [".scss"],
-           "cleanCSS":{  
-              "sourcemaps":true,
-              "level":{  
-                 "1":{  
-                    "removeQuotes":false
-                 },
-                 "2":{  
-
-                 }
-              },
-              "compatibility":{  
-                 "properties":{  
-                    "urlQuotes":true
-                 }
-              }
-           },
-           "autoprefixer":{  
-              "browsers":[  
-                 "last 2 versions"
-              ],
-              "cascade":false
-           }
-        },
-        "php_plugin":{
-            "extensions": [".php"]
-         },
-        "image":{
-            "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
-        },
-        "font":{
-         "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+      "style":{  
+         "sourcemaps":false,
+         "autoprefixer":false,
+         "extractMedia":false,
+         "cleanCSS":false
       }
-     },
-     "development":{  
-    
-        "script":{  
-         "extensions": [".js"],
-           "uglify":{  
-              "mangle":false,
-              "compress":false
-           }
-        },
-        "style":{  
-         "extensions": [".scss"],
-           "cleanCSS":{  
-              "sourcemaps":true,
-              "level":{  
-                 "1":{  
-                    "removeQuotes":false
-                 },
-                 "2":{  
-                 }
-              },
-              "compatibility":{  
-                 "properties":{  
-                    "urlQuotes":true
-                 }
-              }
-           },
-           "autoprefixer":{  
-              "browsers":[  
-                 "last 2 versions"
-              ],
-              "cascade":false
-           }
-        },
-        "image":{
-            "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
-        },
-        "font":{
-         "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+   },
+   "development":{  
+       "tasks":{
+          "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
+          "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+    },
+      "script":{  
+         "sourcemaps":false,
+         "uglify":false,
+         "stripDebug":false,
+         "babel":true
+      },
+      "style":{  
+         "sourcemaps":false,
+         "extractMedia":false,
+         "cleanCSS":false,
+         "autoprefixer":false
+      }
+   },
+   "production":{  
+       "tasks":{
+          "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
+          "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+    },
+      "script":{  
+         "sourcemaps":true,
+         "uglify":true,
+         "stripDebug":true,
+         "babel":true
+      },
+      "style":{  
+         "sourcemaps":true,
+         "extractMedia":false,
+         "cleanCSS":true,
+         "autoprefixer":true
+      }
+   }
+},
+"options":{  
+   "default":{  
+
+      "script":{  
+       "extensions": [".js"],
+         "uglify":{  
+            "mangle":false,
+            "compress":false
+         },
+         "babel":{
+          "presets": ["@babel/env"],
+          "sourceType": "script",
+          "compact": false
+          }
+      },
+      "style":{  
+       "extensions": [".scss"],
+         "cleanCSS":{  
+            "sourcemaps":true,
+            "level":{  
+               "1":{  
+                  "removeQuotes":false
+               },
+               "2":{  
+
+               }
+            },
+            "compatibility":{  
+               "properties":{  
+                  "urlQuotes":true
+               }
+            }
+         },
+         "autoprefixer":{  
+            "browsers":[  
+               "last 2 versions"
+            ],
+            "cascade":false
+         }
       },
       "php_plugin":{
           "extensions": [".php"]
-       }
-     },
-     "production":{  
-        "script":{  
-         "extensions": [".js"],
-           "uglify":{  
-              "mangle":false,
-              "compress":false
-           }
-        },
-        "style":{  
-           "extensions": [".scss"],
-           "cleanCSS":{  
-              "sourcemaps":true,
-              "level":{  
-                 "1":{  
-                    "removeQuotes":false
-                 }
-              },
-              "compatibility":{  
-                 "properties":{  
-                    "urlQuotes":true
-                 }
-              }
-           },
-           "autoprefixer":{  
-              "browsers":[  
-                 "last 2 versions"
-              ],
-              "cascade":false
-           }
-        },
-        "image":{
-            "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
-        },
-        "font":{
-         "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+       },
+      "image":{
+          "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
       },
-      "php_plugin":{
-          "extensions": [".php"]
-       }
+      "font":{
+       "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+    }
+   },
+   "development":{  
+  
+      "script":{  
+       "extensions": [".js"],
+         "uglify":{  
+            "mangle":false,
+            "compress":false
+         },
+         "babel":{
+          "presets": ["@babel/env"],
+          "sourceType": "script",
+          "compact": false
+          }
+      },
+      "style":{  
+       "extensions": [".scss"],
+         "cleanCSS":{  
+            "sourcemaps":true,
+            "level":{  
+               "1":{  
+                  "removeQuotes":false
+               },
+               "2":{  
+               }
+            },
+            "compatibility":{  
+               "properties":{  
+                  "urlQuotes":true
+               }
+            }
+         },
+         "autoprefixer":{  
+            "browsers":[  
+               "last 2 versions"
+            ],
+            "cascade":false
+         }
+      },
+      "image":{
+          "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
+      },
+      "font":{
+       "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+    },
+    "php_plugin":{
+        "extensions": [".php"]
      }
-  }
+   },
+   "production":{  
+      "script":{  
+       "extensions": [".js"],
+         "uglify":{  
+            "mangle":false,
+            "compress":false
+         },
+         "babel":{
+          "presets": ["@babel/env"],
+          "sourceType": "script",
+          "compact": false
+          }
+      },
+      "style":{  
+         "extensions": [".scss"],
+         "cleanCSS":{  
+            "sourcemaps":true,
+            "level":{  
+               "1":{  
+                  "removeQuotes":false
+               }
+            },
+            "compatibility":{  
+               "properties":{  
+                  "urlQuotes":true
+               }
+            }
+         },
+         "autoprefixer":{  
+            "browsers":[  
+               "last 2 versions"
+            ],
+            "cascade":false
+         }
+      },
+      "image":{
+          "extensions": [".gif", ".png", ".jpg", ".jpeg", ".ai", ".svg", ".psd"]
+      },
+      "font":{
+       "extensions": [".woff",".woff2",".ttf",".eot",".svg"]
+    },
+    "php_plugin":{
+        "extensions": [".php"]
+     }
+   }
+}
 }

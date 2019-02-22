@@ -67,7 +67,6 @@ function skinsWatch() {
     else if(typeof args.watch === 'string'){
         if (fileSystem.existsSync(`${skinsFolder}${args.watch}`)) {
 
-            configLoader.create(`${skinsFolder}${args.watch}`, "gulpfile")
             skinPaths.push(`${skinsFolder}${args.watch}/hebspack-config.json`)
             ignoreList.push(`${skinsFolder}${args.watch}/node_modules`)
             ignoreList.push(`${skinsFolder}${args.watch}/node_modules/**`)

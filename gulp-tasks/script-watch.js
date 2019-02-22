@@ -17,6 +17,7 @@ const configLoader = require('../common/config-loader');
 const batch = require('gulp-batch');
 const tap = require('gulp-tap')
 const notifier = require('node-notifier');
+const babel = require('gulp-babel');
 
 
 
@@ -138,6 +139,7 @@ module.exports = function() {
 
                     /* Concat and uglify */
                     .pipe(concat(paths.dist.outputScript))
+                    .pipe(gulpIf(run[env].script.babel, babel(options[env].script.babel)))
                     .pipe(gulpIf(run[env].script.uglify, uglify(options[env].script.uglify)))
                     .on('error', function(error) {
                         console.log(colors.red(error));

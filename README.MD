@@ -13,7 +13,7 @@ Hebspack is meant to be used on a folder containing skins. Hebspack only bundles
 
 Assuming you have [Node](https://nodejs.org/en/) version 11 or later installed. 
 
-- First you need Navigate through terminal to a folder containing skin or skins and run this command to create 'package.json' file with default settings:
+- Run this command inside a folder containing skins. If skins are located inside a different folder then you need to specify which one.
 
 ```bash
 npm init
@@ -24,8 +24,8 @@ npm init
 npm install hebspack
 ```
 
-- *Optionaly*
-Change default skins folder by adding hebspackconfig field in in 'package.json' file. Example:
+- *Optionaly*. 
+Change curent skins folder by adding 'hebspackconfig' field in in 'package.json' file. Example:
 ```json
 {
   "name": "skins",
@@ -39,24 +39,64 @@ Change default skins folder by adding hebspackconfig field in in 'package.json' 
 
 #### Migrating from Code Kit:
 
-- Generate default 'hebspack-config.json' and run initial build in a specified skin by running.
+- Run the following command changing 'skin-name' to name of skin folder.
 ```bash
 npm run hebspack default init skin-name
 ```
 
-- Insert the following line in head tag inside a skin's root .tpl file instead of existing asset links. Manifest path is relative to skin root directory, for example "dist/desktop/assets.manifest.json". The argument paths_to_replace is meant to replace relative paths inside css with absolute paths and needs to be sent a portion relative to skin root directory.
+- Replace the following line inside root .tpl file.
+```php
+<style>
+    {inline_css path="assets/desktop/styles/initial/styles.min.css" paths_to_replace=['../fonts/' => 'assets/desktop/fonts/', '../images/' => 'assets/desktop/images/']}
+</style>
+```
+With this line. 
 ```php
 {asset_loader position="head" paths_to_replace=['fonts/' => 'dist/desktop/fonts/', 'images/' => 'dist/desktop/images/'] manifest="dist/desktop/assets.manifest.json"}
 ```
+Paths to replace are paths inside inline css that has to be replaced in order to work relative to root directory. Manifest is a file that contains all paths to bundled files and is generated inside property directory relative to skin root.
 
-- Insert the following line in body tag inside a skin's root .tpl file instead of existing asset links. Manifest path is relative to skin root directory, for example "dist/desktop/assets.manifest.json"
+- Replace the following line inside root .tpl file.
 ```php
-{asset_loader position="body" manifest="dist/desktop/assets.manifest.json"}
+{block name="assets"}
+    <link rel="stylesheet" href="{asset path="assets/desktop/styles/styles.min.css" cdn=false}" async defer>
+    <script src="{asset path="assets/desktop/scripts/scripts.min.js" cdn=false}"></script>
+{/block}
+```
+With this line. 
+```php
+{block name="assets"}
+    {asset_loader position="body" manifest="dist/desktop/assets.manifest.json"}
+{/block}
+```
+Manifest is a file that contains all paths to bundled files and is generated inside property directory relative to skin root.
+
+- Copy @codekit-prepend file names from "scripts.js" or similiar entry point. 
+```js
+// @codekit-prepend "libraries/_jquery.js", "libraries/_jquery.ui.js", "libraries/_cookie.js", "libraries/_json.js", "libraries/_what-input.min.js", "libraries/_validation.js", "libraries/_validation-en.js", "libraries/_hebs.bp.js", "libraries/_swiper.js", "libraries/_galleria.js", "_variables.js", "_polyfills.js", "_ada.js";
 ```
 
-- Copy @codekit-prepend file names which are written in main "scripts.js" or similiar entry point. Paste these file names in hebspack-config.json replacing libFiles array elements to ensure the order of script loading is correct. 
-
+Paste these file names in 'hebspack-config.json' replacing 'libFiles' array elements to ensure the order of script loading is correct. 
+```js
+...
+"libFiles":[  
+    "_jquery.js", "_jquery.ui.js", "_cookie.js", "_json.js", "_what-input.min.js", "_validation.js", "_validation-en.js", "_hebs.bp.js", "_swiper.js", "_galleria.js", "_variables.js", "_polyfills.js", "_ada.js"
+],
+...
+```
 - Copy @codekit-prepend file names which are written in main "scripts.js" or similiar entry point. Paste these file names in hebspack-config.json replacing scriptsFiles array elements to ensure the order of script loading is correct. 
+```js
+// @codekit-append "_common.js", "_booking.js", "_photos.js", "_promotiles.js", "_events.js", "_reviews.js", "_google-maps.js", "_maps.js", "_poi.js", "_galleries.js", "_pressroom.js", "_rooms.js", "_venues.js", "_feeds.js", "_calendar.js";
+```
+Paste these file names in 'hebspack-config.json' replacing 'scriptsFiles' array elements to ensure the order of script loading is correct. 
+```js
+...
+"scriptsFiles":[  
+    "_common.js", "_booking.js", "_photos.js", "_promotiles.js", "_events.js", "_reviews.js", "_google-maps.js", "_maps.js", "_poi.js", "_galleries.js", "_pressroom.js", "_rooms.js", "_venues.js", "_feeds.js", "_calendar.js"
+],
+...
+```
+The order in which scripts are bundled are the following: files spicified in libFiles array, files inside libFolder, files specified in scriptsFiles array, any other js file in scripts folder.
 
 ## Bundler commands
 
@@ -115,7 +155,7 @@ This will run initial build, generating default 'hebspack-config.json' and bundl
 ```bash
 npm run hebspack watch skin-name
 ```
-This will apply watch mode for specified skin, generating default 'hebspack-config.json.
+This will apply watch mode for specified skin.
 
 ## Custom Task Declaration
 
@@ -123,9 +163,17 @@ Custom task creation steps:
 
 - Create a folder called 'gulp-tasks' inside a skin folder.
 
-- Create 'task-name.js' changing the name to suit your task.
+- Create 'task-name.js' inside 'gulp-tasks' folder changing the name to suit your task.
 
-- Modify 'hebspack-config.json' by adding 'task-name' to tasks.init or tasks.watch array according to environmnet.
+- Modify 'hebspack-config.json' by adding 'task-name' to 'init' or 'watch' array according to environmnet.
+```js
+...
+"tasks":{
+    "init":[ "task-name", "style-init","script-init","image-init","font-init","php-plugins-init"],
+    "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+},
+...
+```
 
 - Declare a task in 'task-name.js' choosing one of the following methods:
 
@@ -186,7 +234,7 @@ module.exports = function() {
 });
 ```
 
-## Default config explanation
+## Default config walkthrough
 
 ```js
 {
