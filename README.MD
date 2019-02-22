@@ -3,7 +3,7 @@
 <p align="center">
     <img src="./favicon.png" >
 </p>
-Hebspack is a gulp configuration to bundle skin files for web development and distribution. 
+Hebspack is a gulp-based cli tool to bundle skin files for web development and distribution.
 
 ## Installation
 
@@ -18,6 +18,7 @@ Assuming you have [Node](https://nodejs.org/en/) version 11 or later installed.
 ```bash
 npm init
 ```
+This will generate 'package.json' file. Default options are fine.
 
 - Then run this command to download and install hebspack package
 ```bash

@@ -15,6 +15,7 @@
     "app-root-path": "^2.1.0",
     "browser-sync": "^2.26.3",
     "clean-up-string": "^2.0.0",
+    "cli-table": "^0.3.1",
     "concat-with-sourcemaps": "^1.1.0",
     "css-stringify": "^2.0.0",
     "del": "^3.0.0",
@@ -49,7 +50,7 @@
     "webpack-stream": "^5.2.1"
   },
   "deprecated": false,
-  "description": "Hebspack is a gulp configuration to bundle skin files for web development and distribution.",
+  "description": "Hebspack is a gulp-based cli tool to bundle skin files for web development and distribution.",
   "devDependencies": {
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -65,8 +66,7 @@
   "scripts": {
     "gulp": "gulp --color=always",
     "hebspack": "hebspack",
-    "postinstall": "node postinstall.js",
-    "test": "node postinstall.js"
+    "postinstall": "node postinstall.js"
   },
-  "version": "3.5.7"
+  "version": "3.6.6"
 }

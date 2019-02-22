@@ -56,20 +56,13 @@ configLoader.loadSkin(args.skinpath)
                         .pipe(gulp.dest(function(file) {
                             lastFileObject=file;
                             let sourceDirRegex = new RegExp(`\/${paths.src.sourceFolder}\/`, 'g');
-                            let relativePath = path.dirname(file.path)
-                            if (!(relativePath.slice(-1) == `/`)) {
-                                relativePath= `${relativePath}/`
-                            }
-
-                            let relativePathDist = relativePath.replace(sourceDirRegex, `/${paths.dist.outputFolder}/`)
+                            let relativePathDist = file.base.replace(sourceDirRegex, `/${paths.dist.outputFolder}/`)
                             return relativePathDist
                         }))
                         .pipe(print(filePath => `Finished '(${colors.cyan(args.skindir)}) stream for file:  ${colors.unstyle(path.dirname(filePath))}/${colors.blue(path.basename(filePath))}'`))
                         .on('end', function() {
-                            let propertyDirOutRegex = new RegExp(`.*(?<=\/${paths.dist.outputFolder}\/).*?(?=\/)`, 'g');
-                            let propertyDirDist = lastFileObject.path.match(propertyDirOutRegex)[0]
 
-                            log(`Finished '(${colors.cyan(args.skindir)}) fonts bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
+                            log(`Finished '(${colors.cyan(args.skindir)}) fonts bundle in: ${colors.cyan(path.relative(args.skinpath, lastFileObject.base))}'`);
                         })
                 }))
        

@@ -51,19 +51,13 @@ module.exports = function() {
                         .pipe(gulp.dest(function(file) {
                             lastFileObject=file;
                             let sourceDirRegex = new RegExp(`\/${paths.src.sourceFolder}\/`, 'g');
-                            let relativePath = path.dirname(file.path)
-                            if (!(relativePath.slice(-1) == `/`)) {
-                                relativePath= `${relativePath}/`
-                            }
-
-                            let relativePathDist = relativePath.replace(sourceDirRegex, `/${paths.dist.outputFolder}/`)
+                            let relativePathDist = file.base.replace(sourceDirRegex, `/${paths.dist.outputFolder}/`)
                             return relativePathDist
                         }))
                         .pipe(print(filePath => `Finished '(${colors.cyan(args.skindir)}) stream for file:  ${colors.unstyle(path.dirname(filePath))}/${colors.blue(path.basename(filePath))}'`))
                         .on('end', function() {
 
-                            log(`Finished '(${colors.cyan(args.skindir)}) images bundle'`);
-
+                            log(`Finished '(${colors.cyan(args.skindir)}) images bundle in: ${colors.cyan(path.relative(args.skinpath, lastFileObject.base))}'`);
                         })
                 }))
 
