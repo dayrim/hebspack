@@ -173,7 +173,8 @@ module.exports = function() {
                                     attributes: [{
                                         ["name"]: "type",
                                         ["value"]: "text/javascript"
-                                    }]
+                                    }
+                                   ]
                                 }
                             } else return null
                         },

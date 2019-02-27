@@ -121,7 +121,7 @@ switch (args.env) {
 
                             regex = new RegExp(`(?<=${paths.src.sourceFolder}\/)(.*)`, 'g');
                             const relativePath = file.base.match(regex)[0];
-
+                            
                             return `${projectDirectory}/${paths.dist.outputFolder}/${relativePath}`
                         }))
 

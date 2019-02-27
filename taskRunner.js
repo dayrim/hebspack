@@ -51,7 +51,7 @@ function initTasks(done) {
   
       // Right here, we return a function per country
       if(!importedTasks[taskName]){
-        log(colros.red("Unexisting task"))
+        log(colors.red("Unexisting task"))
         }
         else{
 
@@ -71,7 +71,7 @@ function initTasks(done) {
   
       // Right here, we return a function per country
       if(!importedTasks[taskName]){
-        log(colros.red("Unexisting task"))
+        log(colors.red("Unexisting task"))
         }
         else{
 
