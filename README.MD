@@ -122,13 +122,6 @@ npx hebspack [skin-name] [options]
 | -s, -serve | Start development server | 
 |      | By default the bundler is run in watch mode with default environment settings | 
 
-#### [watch]
-
-| [watch]        | Description           |
-| ------------- |:-------------:| 
-| watch     | Runs bundler in watch mode | 
-|      | By default bundler is run in watch mode | 
-
 
 ## Usage examples
 
@@ -150,7 +143,11 @@ This will run initial build, generating default 'hebspack-config.json' and bundl
 ```bash
 npx hebspack skin-name -w
 ```
-This will apply watch mode for specified skin.
+This will run watch mode for specified skin.
+```bash
+npx hebspack -w -i
+```
+This will run initial build and watch mode for every found skin.
 
 ## Custom Task Declaration
 

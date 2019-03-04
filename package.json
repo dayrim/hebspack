@@ -83,7 +83,7 @@
     "hebspack": "hebspack",
     "postinstall": "node postinstall.js"
   },
-  "version": "3.7.0",
+  "version": "3.7.1",
   "hebspackconfig": {
     "skinspath": "/Users/admin/sites/cms/public/skins/"
   }
