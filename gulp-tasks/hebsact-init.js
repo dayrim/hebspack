@@ -62,7 +62,7 @@ module.exports = function() {
                         .pipe(print(filepath => `Stream started for: ${colors.unstyle(path.dirname(filepath))}/${colors.red(path.basename(filepath))}`))
                         
                         .pipe(webpackStream({
-
+                          mode: 'development',
                             output: {
                               path: (()=>dir.path.replace(new RegExp(`${paths.src.sourceFolder}`, 'g'), paths.dist.outputFolder))(),
                               filename: '[name].bundle.js',
@@ -74,7 +74,7 @@ module.exports = function() {
                                 {
                                   test: /\.(js|jsx)$/,
                                   loader: 'babel-loader',
-
+                                  
                                 },
                                 {
                                   test: /\.html$/,

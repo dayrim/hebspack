@@ -31,6 +31,17 @@ switch (args.env) {
         break;
 }
 
+log(`Executing ${colors.magenta(env)} environment set`)
+if(args.init && args.watch){
+    log(`Bundling ${colors.magenta(`initial build`)}`)
+    log(`Running ${colors.magenta(`watch mode`)}`)
+}
+else if(args.init && !args.watch){
+    log(`Bundling ${colors.magenta(`initial build`)}`)
+}
+else if(!args.init && args.watch){
+    log(`Running ${colors.magenta(`watch mode`)}`)
+}
 
 gulp.task('skinsWatch', skinsWatch);
 
@@ -50,47 +61,38 @@ function skinsWatch() {
     
     let skinsFolder = hebspackconfig.skinspath;
 
-    log(`Base skins folder: ${ colors.magenta(skinsFolder)}`)
-    if (typeof args.init === 'string') {
-            if (fileSystem.existsSync(`${skinsFolder}${args.init}`)) {
+    if (typeof args.skindir === 'string'){
+        if (fileSystem.existsSync(`${skinsFolder}${args.skindir}`)) {
 
-                configLoader.create(`${skinsFolder}${args.init}`, "gulpfile")
-                skinPaths.push(`${skinsFolder}${args.init}/hebspack-config.json`)
-                ignoreList.push(`${skinsFolder}${args.init}/node_modules`)
-                ignoreList.push(`${skinsFolder}${args.init}/node_modules/**`)
-
-            } else {
-                log(colors.red(`${colors.red(`Skins directory: '${args.init}' does not exist`)}`))
-                return
-            }
-    }
-    else if(typeof args.watch === 'string'){
-        if (fileSystem.existsSync(`${skinsFolder}${args.watch}`)) {
-
-            skinPaths.push(`${skinsFolder}${args.watch}/hebspack-config.json`)
-            ignoreList.push(`${skinsFolder}${args.watch}/node_modules`)
-            ignoreList.push(`${skinsFolder}${args.watch}/node_modules/**`)
+            configLoader.create(`${skinsFolder}${args.skindir}`, "gulpfile")
+            skinPaths.push(`${skinsFolder}${args.skindir}/hebspack-config.json`)
+            ignoreList.push(`${skinsFolder}${args.skindir}/node_modules`)
+            ignoreList.push(`${skinsFolder}${args.skindir}/node_modules/**`)
 
         } else {
-            log(colors.red(`${colors.red(`Skins directory: '${args.watch}' does not exist`)}`))
+            log(`Skins directory: ${colors.red(`'${args.skindir}' does not exist`)}`)
             return
         }
     }
-    else{
-     
-            if (fileSystem.existsSync(`${skinsFolder}hebspack-config.json`)) {
-                skinPaths.push(`${skinsFolder}hebspack-config.json`)
-                ignoreList.push(`${skinsFolder}node_modules`)
-                ignoreList.push(`${skinsFolder}node_modules/**`)
-                ignoreList.push(`${skinsFolder}master/**`)
-            }
-            else{
-                skinPaths.push(`${skinsFolder}*/hebspack-config.json`)
-                ignoreList.push(`${skinsFolder}node_modules`)
-                ignoreList.push(`${skinsFolder}node_modules/**`)
-                ignoreList.push(`${skinsFolder}master/**`)
-            }
+    else {
+        if (fileSystem.existsSync(`${skinsFolder}hebspack-config.json`)) {
+            skinPaths.push(`${skinsFolder}hebspack-config.json`)
+            ignoreList.push(`${skinsFolder}node_modules`)
+            ignoreList.push(`${skinsFolder}node_modules/**`)
+            ignoreList.push(`${skinsFolder}master/**`)
+        }
+        else{
+            skinPaths.push(`${skinsFolder}*/hebspack-config.json`)
+            ignoreList.push(`${skinsFolder}**/node_modules`)
+            ignoreList.push(`${skinsFolder}**/node_modules/**`)
+            ignoreList.push(`${skinsFolder}*/master/**`)
+        }
     }
+
+
+    
+    log(`Base skins folder: ${ colors.magenta(skinsFolder)}`)
+   
     let skinsWatcher = watch(skinPaths, {
         ignoreInitial: false,
         read: true,
@@ -151,7 +153,7 @@ function skinsWatch() {
             }
      
         });
-
+        log(`Running executable: ${colors.grey(gulpCommands)}`)
 
         const skinpath = args.skinpath
         const skindir = args.skindir

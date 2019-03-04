@@ -64,9 +64,9 @@ function initTasks(done) {
       seriesDone();
       done();
     })(); 
-  }
+}
   
-  function watchTasks(done) {
+function watchTasks(done) {
     const tasks = run[env].tasks.watch.map((taskName) => {
   
       // Right here, we return a function per country
@@ -84,26 +84,22 @@ function initTasks(done) {
       seriesDone();
       done();
     })(); 
-  }
+}
 
-  initTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`init-build`)} task`
-  watchTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`watch`)} task`
+initTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`init-build`)} task`
+watchTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`watch`)} task`
 
 
-  let skinTasks 
+let skinTasks 
 
-  if(args.init ){
-    if(run[env].tasks.init)
-    {    
-        skinTasks= gulp.series(initTasks);
-        gulp.task('skinTasks', skinTasks);
-        }
-        
-    }
-    else{
-        if(run[env].tasks.watch){
-            skinTasks= gulp.series(watchTasks)
-            gulp.task('skinTasks', skinTasks);
-        };
-    }
+if(args.init && args.watch){
+    skinTasks= gulp.series(initTasks,watchTasks);
+}
+else if(args.init && !args.watch){
+    skinTasks= gulp.series(initTasks);
+}
+else if(!args.init && args.watch){
+    skinTasks= gulp.series(watchTasks);
+}
 
+gulp.task('skinTasks', skinTasks);

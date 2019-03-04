@@ -102,24 +102,25 @@ The order in which scripts are bundled are the following: files spicified in lib
 ## Bundler commands
 
 ```bash
-npm run hebspack [env] [init] [watch] [skin-name]
+npx hebspack [skin-name] [options]
 ```
 
-#### [env]
+#### [skin-name]
 
-| [env]        | Description           |
+| [skin-name]        | Description           |
 | ------------- |:-------------:| 
-| default     | Run bundler with default environment settings | 
-| development    | Run bundler with development environment settings     |   
-| production | Run bundler with production environment settings      | 
-|      | The bundler is run in default environment settings without specifying an option| 
+| skin-name     | Runs bundling for specified skin only | 
+|      | By default bundling runs for every found skin | 
 
-#### [init]
+#### [options]
 
-| [init]        | Description           |
+| [options]        | Description           |
 | ------------- |:-------------:| 
-| init     | Runs initial bundling | 
-|      | By default bundler is run in watch mode | 
+| -e, -env | Environment settings. Possible settings are 'production' or 'development' or 'default'. | 
+| -i, -init     | Run initial build | 
+| -w, -watch    | Run watch mode |   
+| -s, -serve | Start development server | 
+|      | By default the bundler is run in watch mode with default environment settings | 
 
 #### [watch]
 
@@ -129,32 +130,25 @@ npm run hebspack [env] [init] [watch] [skin-name]
 |      | By default bundler is run in watch mode | 
 
 
-#### [skin-name]
-
-| [skin-name]        | Description           |
-| ------------- |:-------------:| 
-| skin-name     | Runs bundling for specified skin only | 
-|      | By default bundling runs for every found skin | 
-
 ## Usage examples
 
 ```bash
-npm run hebspack
+npx hebspack
 ```
 This will apply watch mode for any skin containing configured 'hebspack-config.json'. Meaning the files will only bundle on change. 
 
 ```bash
-npm run hebspack init
+npx hebspack -i
 ```
 This will run initial build, bundling all files for any skin containing 'hebspack-config.json'.
 
 ```bash
-npm run hebspack init skin-name
+npx hebspack skin-name -i
 ```
 This will run initial build, generating default 'hebspack-config.json' and bundling all files for only one skin in specified folder.
 
 ```bash
-npm run hebspack watch skin-name
+npx hebspack skin-name -w
 ```
 This will apply watch mode for specified skin.
 
