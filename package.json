@@ -1,7 +1,7 @@
 {
   "author": "Dmitrijs Pavlovs",
   "bin": {
-    "hebspack": "exec.js"
+    "hebspack": "cli.js"
   },
   "bugs": {
     "url": "https://github.com/dayrim/hebspack/issues"
@@ -46,14 +46,9 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "minimist": "^1.2.0",
-    "navi": "^0.11.5",
-    "next": "^8.0.3",
     "node-notifier": "^5.4.0",
     "npm-add-script": "^1.1.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-navi": "^0.11.6",
     "require-dir": "^1.2.0",
     "rework": "^1.0.1",
     "rework-move-media": "0.0.5",
@@ -62,7 +57,18 @@
     "through2": "^3.0.0",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
-    "webpack-stream": "^5.2.1"
+    "webpack-stream": "^5.2.1",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-navi": "^0.11.6",
+    "next": "^8.0.3",
+    "webpack-dev-server": "^3.2.1",
+    "react-hot-loader": "^4.7.2",
+    "webpack-dev-middleware": "^3.6.0",
+    "webpack-hot-middleware": "^2.24.3",
+    "gulp-connect-php": "^1.0.3",
+    "react-router-dom": "^4.3.1",
+    "sphp": "^0.6.3"
   },
   "deprecated": false,
   "description": "Hebspack is a gulp-based cli tool to bundle skin files for web development and distribution.",
@@ -70,6 +76,7 @@
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0"
+
   },
   "homepage": "https://github.com/dayrim/hebspack.git#readme",
   "license": "ISC",
@@ -80,11 +87,11 @@
   },
   "scripts": {
     "gulp": "gulp --color=always",
-    "hebspack": "hebspack",
     "postinstall": "node postinstall.js"
   },
-  "version": "3.7.1",
+  "version": "3.7.3",
   "hebspackconfig": {
-    "skinspath": "/Users/admin/sites/cms/public/skins/"
+    "skinspath": "/Users/admin/sites/cms/public/skins/",
+    "skins": ["hebsact", "skin-apple-farm"]
   }
 }

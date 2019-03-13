@@ -25,26 +25,8 @@ module.exports = function() {
 
     /* Set environment variable from cli flag*/
 
-    let env;
     const args = minimist(process.argv.slice(2));
 
-    switch (args.env) {
-        case "default":
-            env = "default"
-            break;
-
-        case "development":
-            env = "development"
-            break;
-
-        case "production":
-            env = "production"
-            break;
-
-        default:
-            env = "default"
-            break;
-    }
     configLoader.loadSkin(`${args.skinpath}`)
 
     skinWatch = watch(args.skinpath, {
@@ -60,7 +42,7 @@ module.exports = function() {
 
         let filePaths = [];
 
-        options[env].script.extensions.forEach(extension => {
+        options[args.env].script.extensions.forEach(extension => {
             filePaths.push(`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.scriptsFolder}/**/*${extension}`)
         });
 
@@ -93,7 +75,7 @@ module.exports = function() {
 
                 let srcFiles = [];
 
-                options[env].script.extensions.forEach(extension => {
+                options[args.env].script.extensions.forEach(extension => {
                     srcFiles.push(`${sourceScripts}/**/*${extension}`)
                 });
 
@@ -108,7 +90,7 @@ module.exports = function() {
 
                     }))
 
-                    .pipe(gulpIf(run[env].script.sourcemaps, sourcemaps.init()))
+                    .pipe(gulpIf(run[args.env].script.sourcemaps, sourcemaps.init()))
 
 
                     /* Reorders files in stream */
@@ -127,7 +109,7 @@ module.exports = function() {
                                 srcOrder.push(`${fileName}`);
                             });
                         }
-                        options[env].script.extensions.forEach(extension=>{
+                        options[args.env].script.extensions.forEach(extension=>{
                             srcOrder.push(`*${extension}`);
                         })
                         
@@ -139,15 +121,15 @@ module.exports = function() {
 
                     /* Concat and uglify */
                     .pipe(concat(paths.dist.outputScript))
-                    .pipe(gulpIf(run[env].script.babel, babel(options[env].script.babel)))
-                    .pipe(gulpIf(run[env].script.uglify, uglify(options[env].script.uglify)))
+                    .pipe(gulpIf(run[args.env].script.babel, babel(options[args.env].script.babel)))
+                    .pipe(gulpIf(run[args.env].script.uglify, uglify(options[args.env].script.uglify)))
                     .on('error', function(error) {
                         console.log(colors.red(error));
                         this.emit('end')
                     })
 
                     /* Write source maps */
-                    .pipe(gulpIf(run[env].script.sourcemaps, sourcemaps.write('./')))
+                    .pipe(gulpIf(run[args.env].script.sourcemaps, sourcemaps.write('./')))
 
                     .pipe(gulp.dest(function(fileObject) {
 
@@ -183,7 +165,9 @@ module.exports = function() {
 
                     .pipe(print(filePath => `Finished '(${colors.cyan(args.skindir)}) stream for file:  ${colors.unstyle(path.dirname(filePath))}/${colors.blue(path.basename(filePath))}'`))
                     .on('end', function() {
-
+                        if (args.browsersync) {
+                            process.send("BROWSER_RELOAD");
+                            }
                         log(`Finished '(${colors.cyan(args.skindir)}) scripts bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
                         notifier.notify({
                             title: 'Hebspack',

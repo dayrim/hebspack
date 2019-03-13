@@ -9,29 +9,13 @@ const validateConfig = require('./common/validate-config');
 const log = require('fancy-log');
 const watch = require('gulp-watch');
 const { spawn } = require('child_process');
+const browserSync = require('browser-sync')
 
-let env;
+
 const args = minimist(process.argv.slice(2));
 
-switch (args.env) {
-    case "default":
-        env = "default"
-        break;
 
-    case "development":
-        env = "development"
-        break;
-
-    case "production":
-        env = "production"
-        break;
-
-    default:
-        env = "default"
-        break;
-}
-
-log(`Executing ${colors.magenta(env)} environment set`)
+log(`Executing ${colors.magenta(args.env)} environment set`)
 if(args.init && args.watch){
     log(`Bundling ${colors.magenta(`initial build`)}`)
     log(`Running ${colors.magenta(`watch mode`)}`)
@@ -43,11 +27,50 @@ else if(!args.init && args.watch){
     log(`Running ${colors.magenta(`watch mode`)}`)
 }
 
+let browser; 
+if(args.browsersync){
+    browser = browserSync.create();
+    let config = {
+        proxy: (()=>{
+            if(typeof args.browsersync==='number'){
+                return `http://localhost:${args.browsersync}`
+            }
+            else{
+                return `http://localhost:80`
+            }
+        })(),
+        port: 9000,
+        reloadOnRestart: true,
+        open: false,
+        rewriteRules: [
+            {
+                match: /Content-Security-Policy/,
+                fn: function(match) {
+                    return "DISABLED-Content-Security-Policy";
+                }
+            }
+        ],
+        callbacks: {
+            /**
+             * This 'ready' callback can be used
+             * to access the Browsersync instance
+             */
+            ready: function(err, br) {
+                
+            }
+        }
+    };
+    browser.init(config);
+
+}
+
+
+
 gulp.task('skinsWatch', skinsWatch);
 
 function skinsWatch() {
 
-    
+
     if (!(appRoot.path.slice(-1) == `/`)) {
         appRoot.path = `${appRoot.path}/`
     }
@@ -61,18 +84,20 @@ function skinsWatch() {
     
     let skinsFolder = hebspackconfig.skinspath;
 
-    if (typeof args.skindir === 'string'){
-        if (fileSystem.existsSync(`${skinsFolder}${args.skindir}`)) {
+    if (typeof args.skins === 'string'){
+        args.skins.split(",").map(skin=>{
+            if (fileSystem.existsSync(`${skinsFolder}${skin}`)) {
+                configLoader.create(`${skinsFolder}${skin}`, "gulpfile")
+                skinPaths.push(`${skinsFolder}${skin}/hebspack-config.json`)
+                ignoreList.push(`${skinsFolder}${skin}/node_modules`)
+                ignoreList.push(`${skinsFolder}${skin}/node_modules/**`)
+    
+            } else {
+                log(`Skins directory: ${colors.red(`'${skin}' does not exist`)}`)
+                return
+            }
+        })
 
-            configLoader.create(`${skinsFolder}${args.skindir}`, "gulpfile")
-            skinPaths.push(`${skinsFolder}${args.skindir}/hebspack-config.json`)
-            ignoreList.push(`${skinsFolder}${args.skindir}/node_modules`)
-            ignoreList.push(`${skinsFolder}${args.skindir}/node_modules/**`)
-
-        } else {
-            log(`Skins directory: ${colors.red(`'${args.skindir}' does not exist`)}`)
-            return
-        }
     }
     else {
         if (fileSystem.existsSync(`${skinsFolder}hebspack-config.json`)) {
@@ -92,7 +117,7 @@ function skinsWatch() {
 
     
     log(`Base skins folder: ${ colors.magenta(skinsFolder)}`)
-   
+
     let skinsWatcher = watch(skinPaths, {
         ignoreInitial: false,
         read: true,
@@ -104,7 +129,9 @@ function skinsWatch() {
             skinsWatcher.unwatch(configFileObject.path)
         }
         let skinDirPath = path.dirname(configFileObject.path)
+
         configLoader.loadSkin(`${skinDirPath}`)
+
         let validateMessage = validateConfig(paths, run ,options )
         if(validateMessage){
             log(colors.red(validateMessage))
@@ -112,8 +139,6 @@ function skinsWatch() {
         }
         
         let taskRunnerPath = path.join(__dirname, 'taskRunner.js')
-
-
 
         let gulpCommands = './node_modules/.bin/gulp skinTasks'
 
@@ -153,6 +178,7 @@ function skinsWatch() {
             }
      
         });
+
         log(`Running executable: ${colors.grey(gulpCommands)}`)
 
         const skinpath = args.skinpath
@@ -163,20 +189,32 @@ function skinsWatch() {
             processList[processIndex].subprocess.kill()
             processList=processList.splice(processIndex,1);
             subprocess= spawn(gulpCommands, {stdio: 'inherit', shell: true});
-            log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
+            subprocess.skindir=args.skindir
+            log(`Restarting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
             processList.push({ subprocess, skindir , skinpath } )
+            subprocess.on('message', (msg) => {
+                if(msg === 'BROWSER_RELOAD'){
+                    browser.reload();
+                }
+              });
         }
         else {
-            subprocess= spawn(gulpCommands, {stdio: 'inherit', shell: true});
+            subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'], shell: true});
+            subprocess.skindir=args.skindir
             log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
             processList.push({ subprocess, skindir , skinpath } )
+            subprocess.on('message', (msg) => {
+                if(msg === 'BROWSER_RELOAD'){
+                    browser.reload();
+                }
+              });
         }
 
 
 
 
         subprocess.on('exit', function (code, signal) {
-            log(`Finished '(${colors.cyan(args.skindir)}) process pid ${subprocess.pid} with code ${code} and signal ${signal}'`);
+            log(`Finished '(${colors.cyan(subprocess.skindir)}) process pid ${subprocess.pid} with code ${code} and signal ${signal}'`);
         });
 
 

@@ -3,10 +3,9 @@
      "src":{  
         "sourceFolder":"assets",
         "styleFolder":"styles",
+        "inlineStyleFolder": "initial",
         "styleFiles":[  
-           "promotiles.scss",
            "styles.scss",
-           "test.scss",
            "initial/styles.scss"
         ],
         "scriptsFolder":"scripts",
@@ -67,7 +66,7 @@
          "sourcemaps":false,
          "uglify":false,
          "stripDebug":false,
-         "babel": true
+         "babel": false
       },
       "style":{  
          "sourcemaps":false,
@@ -85,7 +84,7 @@
          "sourcemaps":false,
          "uglify":false,
          "stripDebug":false,
-         "babel":true
+         "babel":false
       },
       "style":{  
          "sourcemaps":false,

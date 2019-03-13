@@ -16,26 +16,8 @@ const notifier = require('node-notifier');
 module.exports = function() {
 /* Set environment variable from cli flag*/
 
-    let env;
     const args = minimist(process.argv.slice(2));
 
-    switch (args.env) {
-        case "default":
-            env = "default"
-            break;
-
-        case "development":
-            env = "development"
-            break;
-
-        case "production":
-            env = "production"
-            break;
-
-        default:
-            env = "default"
-            break;
-    }
     configLoader.loadSkin(`${args.skinpath}`)
     
     skinWatch = watch(args.skinpath, {
@@ -52,7 +34,7 @@ module.exports = function() {
 
         let filePaths = [];
 
-        options[env].font.extensions.forEach(extension => {
+        options[args.env].font.extensions.forEach(extension => {
             filePaths.push(`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.fontsFolder}/**/*${extension}`)
         });
 
@@ -87,6 +69,9 @@ module.exports = function() {
                 let propertyDirDist = fileObject.path.match(propertyDirOutRegex)[0]
 
                 log(`Finished '(${colors.cyan(args.skindir)}) fonts bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
+                if (args.browsersync) {
+                    process.send("BROWSER_RELOAD");
+                    }
                 notifier.notify({
                     title: 'Hebspack',
                     message: `Fonts bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,

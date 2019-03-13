@@ -26,18 +26,30 @@ npm install hebspack
 ```
 
 - *Optionaly*. 
-Change curent skins folder by adding 'hebspackconfig' field in in 'package.json' file. Example:
+Change curent skins folder by adding 'skinpath' field in in 'package.json' file. Example:
 ```json
 {
   "name": "skins",
   "version": "1.0.0",
-  //...
+  ...
   "hebspackconfig":{
     "skinsath": "/Users/admin/sites/cms/public/skins/"
   }
 }
 ```
 
+- *Optionaly*. 
+Set list of projects to bundle by adding 'skins' field in in 'package.json' file. Example:
+```json
+{
+  "name": "skins",
+  "version": "1.0.0",
+  ...
+  "hebspackconfig":{
+    "skins": ["skin-innatonu","skin-aka","skin-viceroy"]
+  }
+}
+```
 #### Migrating from Code Kit:
 
 - Run the following command changing 'skin-name' to name of skin folder.
@@ -55,7 +67,7 @@ With this line.
 ```php
 {asset_loader position="head" paths_to_replace=['fonts/' => 'dist/desktop/fonts/', 'images/' => 'dist/desktop/images/'] manifest="dist/desktop/assets.manifest.json"}
 ```
-Paths to replace are paths inside inline css that has to be replaced in order to work relative to root directory. Manifest is a file that contains all paths to bundled files and is generated inside property directory relative to skin root.
+paths_to_replace are paths inside inline css that has to be replaced in order for the links to work relative to root directory. Manifest is a file that contains all paths to bundled files and is generated inside property directory relative to skin root.
 
 - Replace the following line inside root .tpl file.
 ```php
@@ -109,7 +121,7 @@ npx hebspack [skin-name] [options]
 
 | [skin-name]        | Description           |
 | ------------- |:-------------:| 
-| skin-name     | Runs bundling for specified skin only | 
+| skin-name | Runs bundling for specified skin only | 
 |      | By default bundling runs for every found skin | 
 
 #### [options]
@@ -117,9 +129,9 @@ npx hebspack [skin-name] [options]
 | [options]        | Description           |
 | ------------- |:-------------:| 
 | -e, -env | Environment settings. Possible settings are 'production' or 'development' or 'default'. | 
-| -i, -init     | Run initial build | 
-| -w, -watch    | Run watch mode |   
-| -s, -serve | Start development server | 
+| -i, -init | Run initial build | 
+| -w, -watch | Run watch mode |   
+| -b, -browsersync | Start browsersync |   
 |      | By default the bundler is run in watch mode with default environment settings | 
 
 

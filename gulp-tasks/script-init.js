@@ -19,26 +19,10 @@ const babel = require('gulp-babel');
 module.exports = function() {
 
 /* Set environment variable from cli flag*/
-let env;
+
 const args = minimist(process.argv.slice(2));
 
-switch (args.env) {
-    case "default":
-        env = "default"
-        break;
 
-    case "development":
-        env = "development"
-        break;
-
-    case "production":
-        env = "production"
-        break;
-
-    default:
-        env = "default"
-        break;
-}
     configLoader.loadSkin(args.skinpath)
     
     return gulp.src(args.skinpath)
@@ -74,7 +58,7 @@ switch (args.env) {
                         // .pipe(print(filepath => `Stream started for: ${colors.unstyle(path.dirname(filepath))}/${colors.red(path.basename(filepath))}`))
 
                         /* Initiate source maps */
-                        .pipe(gulpIf(run[env].style.sourcemaps, sourcemaps.init()))
+                        .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.init()))
 
                         /* Reorders files in stream */
                         .pipe(order(function() {
@@ -92,7 +76,7 @@ switch (args.env) {
                                     srcOrder.push(`${fileName}`);
                                 });
                             }
-                            options[env].script.extensions.forEach(extension=>{
+                            options[args.env].script.extensions.forEach(extension=>{
                                 srcOrder.push(`*${extension}`);
                             })
                           
@@ -103,15 +87,15 @@ switch (args.env) {
 
                         /* Concat and uglify */
                         .pipe(concat(paths.dist.outputScript))
-                        .pipe(gulpIf(run[env].script.babel, babel(options[env].script.babel)))
-                        .pipe(gulpIf(run[env].script.uglify, uglify(options[env].script.uglify)))
+                        .pipe(gulpIf(run[args.env].script.babel, babel(options[args.env].script.babel)))
+                        .pipe(gulpIf(run[args.env].script.uglify, uglify(options[args.env].script.uglify)))
                         .on('error', function(error) {
                             console.log(colors.red(error));
                             this.emit('end')
                         })
 
                         /* Write source maps */
-                        .pipe(gulpIf(run[env].style.sourcemaps, sourcemaps.write('./')))
+                        .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.write('./')))
 
                         /* Determines output directory */
                         .pipe(gulp.dest(function(file) {

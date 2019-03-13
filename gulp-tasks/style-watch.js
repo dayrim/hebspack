@@ -26,26 +26,7 @@ module.exports = function() {
 
    /* Set environment variable from cli flag*/
 
-    let env;
     const args = minimist(process.argv.slice(2));
-
-    switch (args.env) {
-        case "default":
-            env = "default"
-            break;
-
-        case "development":
-            env = "development"
-            break;
-
-        case "production":
-            env = "production"
-            break;
-
-        default:
-            env = "default"
-            break;
-    }
 
     configLoader.loadSkin(`${args.skinpath}`)
 
@@ -56,16 +37,12 @@ module.exports = function() {
         verbose: false,
         events: ['addDir', 'unlinkDir']
     }, (skinDir, event) => {
-
-
-
-
-
+ 
         /* Prepares file path patterns to be watched */
 
         let filePaths = [];
 
-        options[env].style.extensions.forEach(extension => {
+        options[args.env].style.extensions.forEach(extension => {
             filePaths.push(`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}/**/*${extension}`)
         });
 
@@ -107,7 +84,7 @@ module.exports = function() {
                 /* Prepares file paths to be processed */
 
                 let srcFiles = [];
-                options[env].style.extensions.forEach(extension => {
+                options[args.env].style.extensions.forEach(extension => {
                     srcFiles.push(`${sourceStyles}/**/*${extension}`)
                 });
 
@@ -125,7 +102,7 @@ module.exports = function() {
                     }))
 
                     /* Initiate source maps */
-                    .pipe(gulpIf(run[env].style.sourcemaps, sourcemaps.init()))
+                    .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.init()))
 
                     /* Compile sass */
                     .pipe(sass())
@@ -152,7 +129,7 @@ module.exports = function() {
                     // }))
 
                     /* Extracts media styles in seperate files*/
-                    .pipe(gulpIf(run[env].style.extractMedia, extractMedia({
+                    .pipe(gulpIf(run[args.env].style.extractMedia, extractMedia({
                         ignoreFiles: ["promotiles.css", "initial/styles.css"],
                         pathIgnored: function(fullPath, ignoredFile) {
                             let regex = new RegExp(`(?<=${paths.src.styleFolder}\/)(.*)`, 'g');
@@ -166,14 +143,14 @@ module.exports = function() {
                     })))
 
                     /* Concats files with same names */
-                    .pipe(concatDuplicates(run[env].style.sourcemaps))
+                    .pipe(concatDuplicates(run[args.env].style.sourcemaps))
 
                     /* Runs Optimization and Autoprefixing */
-                    .pipe(gulpIf(run[env].style.cleanCSS, cleanCSS(options[env].style.cleanCSS)))
-                    .pipe(gulpIf(run[env].style.autoprefixer, autoprefixer(options[env].style.autoprefixer)))
+                    .pipe(gulpIf(run[args.env].style.cleanCSS, cleanCSS(options[args.env].style.cleanCSS)))
+                    .pipe(gulpIf(run[args.env].style.autoprefixer, autoprefixer(options[args.env].style.autoprefixer)))
 
                     /* Write sourcemaps */
-                    .pipe(gulpIf(run[env].style.sourcemaps, sourcemaps.write('./')))
+                    .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.write('./')))
 
                     /* Determine output location */
                     .pipe(gulp.dest(function(file) {
@@ -241,7 +218,9 @@ module.exports = function() {
                                         ["value"]: mediaAttribute
                                     }]
                                 }
-                            } else if (minimatch(fullPath, `**/${paths.dist.outputFolder}/**/${paths.src.styleFolder}/*media*.css`)) {
+                        }
+                    
+                         else if (minimatch(fullPath, `**/${paths.dist.outputFolder}/**/${paths.src.styleFolder}/*media*.css`)) {
                                 let regex = new RegExp(`(?=${paths.dist.outputFolder}\/)(.*)`, 'g');
                                 const relativePath = fullPath.match(regex)[0]
                                 return {
@@ -270,13 +249,16 @@ module.exports = function() {
                                         }
                                     ]
                                 }
-                            } else return null
+                            } 
+                            else return null
                         },
                         manifestPath: propertyDirDist
 
 
                     })).on('end', function() {
-
+                        if (args.browsersync) {
+                            process.send("BROWSER_RELOAD");
+                          }
                         log(`Finished '(${colors.cyan(args.skindir)}) style bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
                         notifier.notify({
                             title: 'Hebspack',

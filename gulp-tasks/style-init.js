@@ -21,26 +21,8 @@ const notifier = require('node-notifier');
 /* Set environment variable from cli flag*/
 
 module.exports = function() {
-    let env;
     const args = minimist(process.argv.slice(2));
     
-    switch (args.env) {
-        case "default":
-            env = "default"
-            break;
-    
-        case "development":
-            env = "development"
-            break;
-    
-        case "production":
-            env = "production"
-            break;
-    
-        default:
-            env = "default"
-            break;
-    }
     configLoader.loadSkin(args.skinpath)
     return gulp.src(args.skinpath)
 
@@ -74,7 +56,7 @@ module.exports = function() {
                         }))
 
                         /* Initiates source maps */
-                        .pipe(gulpIf(run[env].style.sourcemaps, sourcemaps.init()))
+                        .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.init()))
 
                         /* Compiles sass */
                         .pipe(sass())
@@ -84,6 +66,7 @@ module.exports = function() {
                         })
 
                         /* Replaces paths inside inline css */
+
                         // .pipe(tap(function(file) {
                         //     if (minimatch(file.path, `**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}/initial/styles.css`)) {
                         //         if (file.isBuffer()) {
@@ -102,7 +85,7 @@ module.exports = function() {
                         // }))
 
                         /* Extract smedia styles in seperate files*/
-                        .pipe(gulpIf(run[env].style.extractMedia, extractMedia({
+                        .pipe(gulpIf(run[args.env].style.extractMedia, extractMedia({
                             ignoreFiles: ["promotiles.css", "initial/styles.css"],
                             pathIgnored: function(fullPath, ignoredFile) {
                                 let regex = new RegExp(`(?<=${paths.src.styleFolder}\/)(.*)`, 'g');
@@ -116,14 +99,14 @@ module.exports = function() {
                         })))
 
                         /* Concats files with same names */
-                        .pipe(concatDuplicates(run[env].style.sourcemaps))
+                        .pipe(concatDuplicates(run[args.env].style.sourcemaps))
 
                         /* Runs Optimization and Autoprefixing */
-                        .pipe(gulpIf(run[env].style.cleanCSS, cleanCSS(options[env].style.cleanCSS)))
-                        .pipe(gulpIf(run[env].style.autoprefixer, autoprefixer(options[env].style.autoprefixer)))
+                        .pipe(gulpIf(run[args.env].style.cleanCSS, cleanCSS(options[args.env].style.cleanCSS)))
+                        .pipe(gulpIf(run[args.env].style.autoprefixer, autoprefixer(options[args.env].style.autoprefixer)))
 
                         /* Write sourcemaps */
-                        .pipe(gulpIf(run[env].style.sourcemaps, sourcemaps.write('./')))
+                        .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.write('./')))
 
                         /* Determines destination for output */
                         .pipe(gulp.dest(function(file) {
@@ -142,7 +125,7 @@ module.exports = function() {
                                 manifestFile: `assets.manifest.json`,
                                 resetManifest: false,
                                 makeFileObject: function(fullPath, mediaAttribute) {
-
+ 
                                     if (minimatch(fullPath, `**/${paths.dist.outputFolder}/**/${paths.src.styleFolder}/styles.css`)) {
                                         let regex = new RegExp(`(?=${paths.dist.outputFolder}\/)(.*)`, 'g');
                                         const relativePath = fullPath.match(regex)[0]

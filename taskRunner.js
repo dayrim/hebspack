@@ -6,26 +6,8 @@ const configLoader = require('./common/config-loader');
 const log = require('fancy-log');
 const fileSystem = require('fs');
 
-let env;
+
 const args = minimist(process.argv.slice(2));
-
-switch (args.env) {
-    case "default":
-        env = "default"
-        break;
-
-    case "development":
-        env = "development"
-        break;
-
-    case "production":
-        env = "production"
-        break;
-
-    default:
-        env = "default"
-        break;
-}
 
 let importedTasks;
 let customTasks;
@@ -47,9 +29,9 @@ else{
 
 function initTasks(done) {
     
-    const tasks = run[env].tasks.init.map((taskName) => {
+    const tasks = run[args.env].tasks.init.map((taskName) => {
   
-      // Right here, we return a function per country
+
       if(!importedTasks[taskName]){
         log(colors.red("Unexisting task"))
         }
@@ -67,9 +49,8 @@ function initTasks(done) {
 }
   
 function watchTasks(done) {
-    const tasks = run[env].tasks.watch.map((taskName) => {
+    const tasks = run[args.env].tasks.watch.map((taskName) => {
   
-      // Right here, we return a function per country
       if(!importedTasks[taskName]){
         log(colors.red("Unexisting task"))
         }
@@ -86,6 +67,14 @@ function watchTasks(done) {
     })(); 
 }
 
+function reloadBrowsers(done){
+    if (args.browsersync) {
+        process.send("BROWSER_RELOAD");
+        }
+    done()
+}
+
+reloadBrowsers.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`reload-browsers`)} task`
 initTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`init-build`)} task`
 watchTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`watch`)} task`
 
@@ -93,13 +82,15 @@ watchTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`watch
 let skinTasks 
 
 if(args.init && args.watch){
-    skinTasks= gulp.series(initTasks,watchTasks);
+    skinTasks= gulp.series(initTasks,reloadBrowsers,watchTasks);
 }
 else if(args.init && !args.watch){
-    skinTasks= gulp.series(initTasks);
+    skinTasks= gulp.series(initTasks,reloadBrowsers);
 }
 else if(!args.init && args.watch){
     skinTasks= gulp.series(watchTasks);
 }
+
+
 
 gulp.task('skinTasks', skinTasks);

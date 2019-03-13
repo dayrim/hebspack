@@ -25,26 +25,9 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 module.exports = function() {
 
     /* Set environment variable from cli flag*/
-    let env;
+
     const args = minimist(process.argv.slice(2));
-    
-    switch (args.env) {
-        case "default":
-            env = "default"
-            break;
-    
-        case "development":
-            env = "development"
-            break;
-    
-        case "production":
-            env = "production"
-            break;
-    
-        default:
-            env = "default"
-            break;
-    }
+
         configLoader.loadSkin(args.skinpath)
         
         return gulp.src(args.skinpath)
@@ -61,7 +44,7 @@ module.exports = function() {
                     return gulp.src([`${dir.path}/**/scripts.js`,`!${dir.path}/**/*${paths.src.ignoreSuffix}*`],{allowEmpty: true })
 
                         .pipe(print(filepath => `Stream started for: ${colors.unstyle(path.dirname(filepath))}/${colors.red(path.basename(filepath))}`))
-                        .pipe(gulpIf(run[env].script.babel, babel(options[env].script.babel)))
+                        .pipe(gulpIf(run[args.env].script.babel, babel(options[args.env].script.babel)))
                         .pipe(tap(function(file) {
                           spawn(`./node_modules/.bin/next `, {stdio: 'inherit', shell: true});
                         }))

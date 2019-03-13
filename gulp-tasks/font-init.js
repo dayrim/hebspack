@@ -14,27 +14,8 @@ const notifier = require('node-notifier');
 module.exports = function() {
 
 /* Set environment variable from cli flag*/
-let env;
+
 const args = minimist(process.argv.slice(2));
-
-
-switch (args.env) {
-    case "default":
-        env = "default"
-        break;
-
-    case "development":
-        env = "development"
-        break;
-
-    case "production":
-        env = "production"
-        break;
-
-    default:
-        env = "default"
-        break;
-}
 
 configLoader.loadSkin(args.skinpath)
 
