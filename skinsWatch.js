@@ -184,30 +184,36 @@ function skinsWatch() {
         const skinpath = args.skinpath
         const skindir = args.skindir
         let subprocess;
-        let processIndex = processExists(processList, skinpath)
-        if(processIndex){
-            processList[processIndex].subprocess.kill()
-            processList=processList.splice(processIndex,1);
-            subprocess= spawn(gulpCommands, {stdio: 'inherit', shell: true});
+        let processIndexArray = processExists(processList, skinpath)
+
+        if(processIndexArray.length > 0){
+            log(`Restarting '(${colors.cyan(args.skindir)})`)
+            processIndexArray.forEach(index=>{
+                processList[index].subprocess.kill()
+                processList.splice(index,1);
+            })
+            subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'],shell: true});
+            log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
             subprocess.skindir=args.skindir
-            log(`Restarting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
-            processList.push({ subprocess, skindir , skinpath } )
             subprocess.on('message', (msg) => {
                 if(msg === 'BROWSER_RELOAD'){
                     browser.reload();
                 }
+            processList.push({ subprocess, skindir , skinpath } )
+
               });
         }
         else {
             subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'], shell: true});
-            subprocess.skindir=args.skindir
             log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
-            processList.push({ subprocess, skindir , skinpath } )
+            subprocess.skindir=args.skindir
             subprocess.on('message', (msg) => {
                 if(msg === 'BROWSER_RELOAD'){
                     browser.reload();
                 }
               });
+            processList.push({ subprocess, skindir , skinpath } )
+
         }
 
 
@@ -227,12 +233,11 @@ function skinsWatch() {
 }
 
 function processExists(array, searchKey) {
-    let processIndex;
-  result= array.reduce((accumulator, currentValue,index)=>{
-      if(currentValue['skinpath'] === searchKey){processIndex=index}
+    let processIndexArray =[];
+    result= array.reduce((accumulator, currentValue,index)=>{
+      if(currentValue['skinpath'] === searchKey){processIndexArray.push(index)}
     return accumulator = accumulator || (currentValue['skinpath'] === searchKey)
   },false)
-  if(result){return processIndex}
-  else{ return false}
+  return processIndexArray
 }
 
