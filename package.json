@@ -81,9 +81,5 @@
     "gulp": "gulp --color=always",
     "postinstall": "node postinstall.js"
   },
-  "version": "3.7.5",
-  "hebspackconfig": {
-    "skinspath": "/Users/admin/sites/cms/public/skins/",
-    "skins": ["hebsact", "skin-apple-farm"]
-  }
+  "version": "3.7.6"
 }
