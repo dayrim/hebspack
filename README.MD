@@ -24,6 +24,7 @@ This will generate 'package.json' file. Default options are fine.
 ```bash
 npm install hebspack
 ```
+This will download and install all dependencies.
 
 - *Optionaly*. 
 Change curent skins folder by adding 'skinpath' field in in 'package.json' file. Example:
@@ -56,6 +57,7 @@ Set list of projects to bundle by adding 'skins' field in in 'package.json' file
 ```bash
 npm run hebspack default init skin-name
 ```
+This will generate default config file and execute initial build. 
 
 - Replace the following line inside root .tpl file.
 ```php
@@ -65,9 +67,9 @@ npm run hebspack default init skin-name
 ```
 With this line. 
 ```php
-{asset_loader position="head" paths_to_replace=['fonts/' => 'dist/desktop/fonts/', 'images/' => 'dist/desktop/images/'] manifest="dist/desktop/assets.manifest.json"}
+{asset_loader position="head" paths_to_replace=['../fonts/' => 'dist/desktop/fonts/', '../images/' => 'dist/desktop/images/'] manifest="dist/desktop/assets.manifest.json"}
 ```
-paths_to_replace are paths inside inline css that has to be replaced in order for the links to work relative to root directory. Manifest is a file that contains all paths to bundled files and is generated inside property directory relative to skin root.
+This will load inline files that are listed in json manifest. Paths_to_replace are paths inside inline css that has to be replaced in order for the links to work relative to root directory. 
 
 - Replace the following line inside root .tpl file.
 ```php
@@ -82,7 +84,7 @@ With this line.
     {asset_loader position="body" manifest="dist/desktop/assets.manifest.json"}
 {/block}
 ```
-Manifest is a file that contains all paths to bundled files and is generated inside property directory relative to skin root.
+This will load inline files that are listed in json manifest. 
 
 - Copy @codekit-prepend file names from "scripts.js" or similiar entry point. 
 ```js
@@ -97,6 +99,8 @@ Paste these file names in 'hebspack-config.json' replacing 'libFiles' array elem
 ],
 ...
 ```
+This will load specified files in the order they are given and then every other file in library folder.
+
 - Copy @codekit-append file names from "scripts.js" or similiar entry point. 
 ```js
 // @codekit-append "_common.js", "_booking.js", "_photos.js", "_promotiles.js", "_events.js", "_reviews.js", "_google-maps.js", "_maps.js", "_poi.js", "_galleries.js", "_pressroom.js", "_rooms.js", "_venues.js", "_feeds.js", "_calendar.js";
@@ -109,7 +113,7 @@ Paste these file names in 'hebspack-config.json' replacing 'scriptsFiles' array 
 ],
 ...
 ```
-The order in which scripts are bundled are the following: files spicified in libFiles array, files inside libFolder, files specified in scriptsFiles array, any other js file in scripts folder.
+This will load specified files in the order they are given and then every other file in scripts folder.
 
 ## Bundler commands
 
