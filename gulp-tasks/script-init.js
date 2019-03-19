@@ -46,7 +46,7 @@ const args = minimist(process.argv.slice(2));
                     let propertyDirDist = propertyDir.replace(sourceRegex, paths.dist.outputFolder);
 
                     return gulp.src([`${dir.path}/**/*.js`,
-                            `!${dir.path}/**/*${paths.src.ignoreSuffix}*`
+                            `!${dir.path}/**/*${paths.src.ignoreSuffix}`
                         ],{allowEmpty: true })
 
                         /* Reset Manifest file */

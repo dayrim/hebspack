@@ -81,6 +81,7 @@ module.exports = function() {
 
                 srcFiles.push(`!**/node_modules/**/*`)
                 srcFiles.push(`!**/${paths.dist.outputFolder}/**/*`)
+                srcFiles.push( `!**/*${paths.src.ignoreSuffix}`)
 
                 gulp.src(srcFiles)
                     .pipe(tap(function(fileObject) {

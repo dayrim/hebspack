@@ -99,9 +99,9 @@ function smarty_function_asset_loader($params)
                         }
 
                         if ('css' === $ext) {
-                            $output[] = "<link rel=\"stylesheet\" href=\"{$path}\"{$_attributes}>";
+                            $output[] = "<link rel=\"stylesheet\" href=\"/{$path}\"{$_attributes}>";
                         } elseif ('js' === $ext) {
-                            $output[] = "<script src=\"{$path}\"{$_attributes}></script>";
+                            $output[] = "<script src=\"/{$path}\"{$_attributes}></script>";
                         }
                     }
                 }
