@@ -1,4 +1,11 @@
 {  
+   "general":{
+      "environment": "development",
+      "browsersync": true,
+      "browsersyncPort": 80,
+      "init": true,
+      "watch": true
+   },
   "paths":{  
      "src":{  
         "sourceFolder":"assets",
@@ -131,6 +138,7 @@
        "extensions": [".scss"],
          "cleanCSS":{  
             "sourcemaps":true,
+            "rebase": false,
             "level":{  
                "1":{  
                   "removeQuotes":false
@@ -180,6 +188,7 @@
        "extensions": [".scss"],
          "cleanCSS":{  
             "sourcemaps":true,
+            "rebase": false,
             "level":{  
                "1":{  
                   "removeQuotes":false
@@ -227,6 +236,7 @@
          "extensions": [".scss"],
          "cleanCSS":{  
             "sourcemaps":true,
+            "rebase": false,
             "level":{  
                "1":{  
                   "removeQuotes":false

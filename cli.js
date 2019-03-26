@@ -76,7 +76,7 @@ switch (program.env) {
       gulpCommand = `${gulpCommand} --env=${program.env}` 
       break
   default:
-      program.env = "default"
+      program.env = "notset"
       gulpCommand = `${gulpCommand} --env=${program.env}` 
       break
 }

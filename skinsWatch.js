@@ -14,19 +14,6 @@ const browserSync = require('browser-sync')
 
 const args = minimist(process.argv.slice(2));
 
-
-log(`Executing ${colors.magenta(args.env)} environment set`)
-if(args.init && args.watch){
-    log(`Bundling ${colors.magenta(`initial build`)}`)
-    log(`Running ${colors.magenta(`watch mode`)}`)
-}
-else if(args.init && !args.watch){
-    log(`Bundling ${colors.magenta(`initial build`)}`)
-}
-else if(!args.init && args.watch){
-    log(`Running ${colors.magenta(`watch mode`)}`)
-}
-
 let browser; 
 if(args.browsersync){
     browser = browserSync.create();
@@ -69,7 +56,6 @@ if(args.browsersync){
 gulp.task('skinsWatch', skinsWatch);
 
 function skinsWatch() {
-
 
     if (!(appRoot.path.slice(-1) == `/`)) {
         appRoot.path = `${appRoot.path}/`
@@ -131,12 +117,46 @@ function skinsWatch() {
         let skinDirPath = path.dirname(configFileObject.path)
 
         configLoader.loadSkin(`${skinDirPath}`)
-
         let validateMessage = validateConfig(paths, run ,options )
         if(validateMessage){
             log(colors.red(validateMessage))
             return
         }
+
+        if(args.env === 'notset'){
+            switch (true) {
+                case ((general) && (general.environment==="default")):
+                    args.env = "default"
+                    break;
+                case ((general) && (general.environment==="development")):
+                    args.env = "development"
+                    break;
+                case ((general) && (general.environment==="production")):
+                    args.env = "production"
+                    break;
+                default:
+                    args.env = "default"
+                    break;
+              }
+        }
+
+
+        log(`Executing ${colors.magenta(args.env)} environment set`)
+
+        if(args.init && args.watch){
+            log(`Bundling ${colors.magenta(`initial build`)}`)
+            log(`Running ${colors.magenta(`watch mode`)}`)
+        }
+        else if(args.init && !args.watch){
+            log(`Bundling ${colors.magenta(`initial build`)}`)
+        }
+        else if(!args.init && args.watch){
+            log(`Running ${colors.magenta(`watch mode`)}`)
+        }
+
+
+
+
         
         let taskRunnerPath = path.join(__dirname, 'taskRunner.js')
 
@@ -184,40 +204,34 @@ function skinsWatch() {
         const skinpath = args.skinpath
         const skindir = args.skindir
         let subprocess;
-        let processIndexArray = processExists(processList, skinpath)
+     
 
-        if(processIndexArray.length > 0){
-            log(`Restarting '(${colors.cyan(args.skindir)})`)
-            processIndexArray.forEach(index=>{
-                processList[index].subprocess.kill()
-                processList.splice(index,1);
-            })
-            subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'],shell: true});
-            log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
-            subprocess.skindir=args.skindir
-            subprocess.on('message', (msg) => {
-                if(msg === 'BROWSER_RELOAD'){
-                    browser.reload();
-                }
-            processList.push({ subprocess, skindir , skinpath } )
+        (function killProcess(list,id){
+            let lastProcessIndex = getLastProcessIndex(list,id)
 
-              });
-        }
-        else {
-            subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'], shell: true});
-            log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
-            subprocess.skindir=args.skindir
-            subprocess.on('message', (msg) => {
-                if(msg === 'BROWSER_RELOAD'){
-                    browser.reload();
-                }
-              });
-            processList.push({ subprocess, skindir , skinpath } )
+            if(lastProcessIndex >= 0){
 
-        }
+                log(`Restarting '(${colors.cyan(args.skindir)})`)
 
+                processList[lastProcessIndex].subprocess.kill()
+                processList.splice(lastProcessIndex,1);
 
+                return killProcess(list,id)
+            }
+            else{
+                return
+            }
+        })(processList,skinpath)
 
+        subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'], shell: true});
+        log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
+        subprocess.skindir=args.skindir
+        subprocess.on('message', (msg) => {
+            if(msg === 'BROWSER_RELOAD'){
+                browser.reload();
+            }
+            });
+        processList.push({ subprocess, skindir , skinpath } )
 
         subprocess.on('exit', function (code, signal) {
             log(`Finished '(${colors.cyan(subprocess.skindir)}) process pid ${subprocess.pid} with code ${code} and signal ${signal}'`);
@@ -232,12 +246,16 @@ function skinsWatch() {
 
 }
 
-function processExists(array, searchKey) {
-    let processIndexArray =[];
-    result= array.reduce((accumulator, currentValue,index)=>{
-      if(currentValue['skinpath'] === searchKey){processIndexArray.push(index)}
-    return accumulator = accumulator || (currentValue['skinpath'] === searchKey)
-  },false)
-  return processIndexArray
+function getLastProcessIndex(array, searchKey) {
+
+    let lastIndex = -1;
+
+    result = array.reduce((accumulator, currentValue,index)=>{
+    if(currentValue['skinpath'] === searchKey){lastIndex=index}
+            return accumulator = accumulator || (currentValue['skinpath'] === searchKey)
+    },false)
+
+    return lastIndex;
+
 }
 
