@@ -55,17 +55,17 @@ Set list of projects to bundle by adding 'skins' field in in 'package.json' file
 
 - Run the following command changing 'skin-name' to name of skin folder.
 ```bash
-npm run hebspack default init skin-name
+npx hebspack skin-name
 ```
 This will generate default config file and execute initial build. 
 
-- Replace the following line inside root .tpl file.
+- Replace the following code inside root .tpl file.
 ```php
 <style>
     {inline_css path="assets/desktop/styles/initial/styles.min.css" paths_to_replace=['../fonts/' => 'assets/desktop/fonts/', '../images/' => 'assets/desktop/images/']}
 </style>
 ```
-With this line. 
+With this code. 
 ```php
 {asset_loader position="head" paths_to_replace=['../fonts/' => 'dist/desktop/fonts/', '../images/' => 'dist/desktop/images/'] manifest="dist/desktop/assets.manifest.json"}
 ```
@@ -78,7 +78,7 @@ This will load inline files that are listed in json manifest. Paths_to_replace a
     <script src="{asset path="assets/desktop/scripts/scripts.min.js" cdn=false}"></script>
 {/block}
 ```
-With this line. 
+With this code. 
 ```php
 {block name="assets"}
     {asset_loader position="body" manifest="dist/desktop/assets.manifest.json"}
@@ -132,38 +132,21 @@ npx hebspack [skin-name] [options]
 
 | [options]        | Description           |
 | ------------- |:-------------:| 
-| -e, -env | Environment settings. Possible settings are 'production' or 'development' or 'default'. | 
-| -i, -init | Run initial build | 
-| -w, -watch | Run watch mode |   
 | -b, -browsersync | Start browsersync |   
-|      | By default the bundler is run in watch mode with default environment settings | 
 
 
-## Usage examples
+## Examples
 
 ```bash
 npx hebspack
 ```
-This will apply watch mode for any skin containing configured 'hebspack-config.json'. Meaning the files will only bundle on change. 
+This will run bundler for every skin that contains 'hebspack-config.json'.
 
 ```bash
-npx hebspack -i
+npx hebspack skin-name -b
 ```
-This will run initial build, bundling all files for any skin containing 'hebspack-config.json'.
-
-```bash
-npx hebspack skin-name -i
-```
-This will run initial build, generating default 'hebspack-config.json' and bundling all files for only one skin in specified folder.
-
-```bash
-npx hebspack skin-name -w
-```
-This will run watch mode for specified skin.
-```bash
-npx hebspack -w -i
-```
-This will run initial build and watch mode for every found skin.
+This will run bundler for a skin, which name is "skin-name" and apply browsersync.
+xw
 
 ## Custom Task Declaration
 
@@ -246,7 +229,16 @@ module.exports = function() {
 
 ```js
 {
-    /*Source and destination folder/files names*/
+    /*General settings*/
+    "general":{
+      /*Bundler environment mode*/
+      "environment": "development",
+      /*Bundling for every file*/
+      "init": true,
+      /*Bundles files on change*/
+      "watch": true
+   },
+    /*Source and destination folder/file names*/
     "paths": {
         /*Source folder and file names*/
         "src": {
@@ -263,6 +255,8 @@ module.exports = function() {
             ],
             /*Folder containing project scripts*/
             "scriptsFolder": "scripts",
+            /*Folder containing styles destinated for inline usage*/
+            "inlineStyleFolder": "initial",
             /*Specifies order for Javascript library files*/
             "libFiles": [
                 "_jquery.js",
@@ -338,7 +332,8 @@ module.exports = function() {
             "script": {
                 "sourcemaps": false,
                 "uglify": false,
-                "stripDebug": false
+                "stripDebug": false,
+                "babel": false
             },
             /*Style plugins*/
             "style": {
@@ -359,7 +354,8 @@ module.exports = function() {
             "script": {
                 "sourcemaps": false,
                 "uglify": false,
-                "stripDebug": false
+                "stripDebug": false,
+                "babel": false 
             },
             /*Style plugins*/
             "style": {
@@ -380,7 +376,8 @@ module.exports = function() {
             "script": {
                 "sourcemaps": true,
                 "uglify": true,
-                "stripDebug": true
+                "stripDebug": true,
+                "babel": false
             },
             /*Style plugins*/
             "style": {
@@ -402,6 +399,11 @@ module.exports = function() {
                 "uglify": {
                     "mangle": false,
                     "compress": false
+                },
+                "babel":{
+                "presets": ["@babel/env"],
+                "sourceType": "script",
+                "compact": false
                 }
             },
             /*Style plugins options*/
@@ -452,6 +454,11 @@ module.exports = function() {
                 "uglify": {
                     "mangle": false,
                     "compress": false
+                },
+                "babel":{
+                "presets": ["@babel/env"],
+                "sourceType": "script",
+                "compact": false
                 }
             },
             /*Style plugins options*/
@@ -499,6 +506,11 @@ module.exports = function() {
                 "uglify": {
                     "mangle": false,
                     "compress": false
+                },
+                "babel":{
+                "presets": ["@babel/env"],
+                "sourceType": "script",
+                "compact": false
                 }
             },
             /*Style plugins options*/
