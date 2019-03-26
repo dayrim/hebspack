@@ -14,6 +14,9 @@ const browserSync = require('browser-sync')
 
 const args = minimist(process.argv.slice(2));
 
+gulp.task('skinsWatch', skinsWatch);
+
+
 let browser; 
 if(args.browsersync){
     browser = browserSync.create();
@@ -48,12 +51,7 @@ if(args.browsersync){
         }
     };
     browser.init(config);
-
 }
-
-
-
-gulp.task('skinsWatch', skinsWatch);
 
 function skinsWatch() {
 
@@ -123,21 +121,36 @@ function skinsWatch() {
             return
         }
 
-        if(args.env === 'notset'){
-            switch (true) {
-                case ((general) && (general.environment==="default")):
-                    args.env = "default"
-                    break;
-                case ((general) && (general.environment==="development")):
-                    args.env = "development"
-                    break;
-                case ((general) && (general.environment==="production")):
-                    args.env = "production"
-                    break;
-                default:
-                    args.env = "default"
-                    break;
-              }
+        switch (true) {
+            case ((general) && (general.environment==="default")):
+                args.env = "default"
+                break;
+            case ((general) && (general.environment==="development")):
+                args.env = "development"
+                break;
+            case ((general) && (general.environment==="production")):
+                args.env = "production"
+                break;
+            default:
+                args.env = "default"
+                break;
+        }
+        switch (true) {
+            case ((general) && (general.watch===true)):
+                args.watch = true
+                break;
+            default:
+                args.watch = false
+                break;
+        }
+
+        switch (true) {
+            case ((general) && (general.init===true)):
+                args.init = true
+                break;
+            default:
+                args.init = false
+                break;
         }
 
 
@@ -224,6 +237,7 @@ function skinsWatch() {
         })(processList,skinpath)
 
         subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'], shell: true});
+
         log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
         subprocess.skindir=args.skindir
         subprocess.on('message', (msg) => {

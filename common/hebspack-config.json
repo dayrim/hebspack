@@ -1,8 +1,6 @@
 {  
    "general":{
       "environment": "development",
-      "browsersync": true,
-      "browsersyncPort": 80,
       "init": true,
       "watch": true
    },
