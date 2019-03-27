@@ -145,8 +145,7 @@ This will run bundler for every skin that contains 'hebspack-config.json'.
 ```bash
 npx hebspack skin-name -b
 ```
-This will run bundler for a skin, which name is "skin-name" and apply browsersync.
-xw
+This will run bundler for a skin, which name is "skin-name" and start browsersync.
 
 ## Custom Task Declaration
 
