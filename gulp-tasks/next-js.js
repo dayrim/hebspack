@@ -44,7 +44,7 @@ module.exports = function() {
                     return gulp.src([`${dir.path}/**/scripts.js`,`!${dir.path}/**/*${paths.src.ignoreSuffix}*`],{allowEmpty: true })
 
                         .pipe(print(filepath => `Stream started for: ${colors.unstyle(path.dirname(filepath))}/${colors.red(path.basename(filepath))}`))
-                        .pipe(gulpIf(run[args.env].script.babel, babel(options[args.env].script.babel)))
+                        .pipe(gulpIf(run[args.env].script.babel, babel(pluginOptions[args.env].script.babel)))
                         .pipe(tap(function(file) {
                           spawn(`./node_modules/.bin/next `, {stdio: 'inherit', shell: true});
                         }))

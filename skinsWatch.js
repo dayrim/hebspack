@@ -98,8 +98,7 @@ function skinsWatch() {
         }
     }
 
-
-    
+    console.log()
     log(`Base skins folder: ${ colors.magenta(skinsFolder)}`)
 
     let skinsWatcher = watch(skinPaths, {
@@ -112,82 +111,71 @@ function skinsWatch() {
         if(configFileObject.event ==='unlink'){
             skinsWatcher.unwatch(configFileObject.path)
         }
-        let skinDirPath = path.dirname(configFileObject.path)
+        let skindirPath = path.dirname(configFileObject.path)
+        let skinNameRegex = new RegExp(`([^\/]*)$`, 'g');
+        let skindir = `${skindirPath.match(skinNameRegex)}`.slice(0, -1);
 
-        configLoader.loadSkin(`${skinDirPath}`)
-        let validateMessage = validateConfig(paths, run ,options )
+
+        configLoader.loadSkin(`${skindirPath}`)
+        let validateMessage = validateConfig(paths, run ,pluginOptions )
         if(validateMessage){
             log(colors.red(validateMessage))
             return
         }
 
-        switch (true) {
-            case ((general) && (general.environment==="default")):
-                args.env = "default"
-                break;
-            case ((general) && (general.environment==="development")):
-                args.env = "development"
-                break;
-            case ((general) && (general.environment==="production")):
-                args.env = "production"
-                break;
-            default:
-                args.env = "default"
-                break;
-        }
-        switch (true) {
-            case ((general) && (general.watch===true)):
-                args.watch = true
-                break;
-            default:
-                args.watch = false
-                break;
-        }
+        if (generalOptions)
+        {
+            switch (true) {
+                case ((generalOptions.environment==="default")):
+                    args.env = "default"
+                    break;
+                case ((generalOptions.environment==="development")):
+                    args.env = "development"
+                    break;
+                case ((generalOptions.environment==="production")):
+                    args.env = "production"
+                    break;
+                default:
+                    args.env = "default"
+                    break;
+            }
 
-        switch (true) {
-            case ((general) && (general.init===true)):
-                args.init = true
-                break;
-            default:
-                args.init = false
-                break;
+            if(!!generalOptions.taskSeries)
+            {args.taskSeries = []                  
+            generalOptions.taskSeries.forEach(series => {
+                args.taskSeries.push(series.slug)
+                args[series.slug]=series.tasks
+            })}
+            else
+            {
+                log(colors.red("No task series specified"))
+                return
+            }
         }
 
+        log(`Executing ${colors.magenta(args.env)} environment mode`)
 
-        log(`Executing ${colors.magenta(args.env)} environment set`)
+        args.taskSeries.forEach(series => {
+            log(`Initiating ${colors.magenta(series)} task series: ${args[series]}`)
+        })
 
-        if(args.init && args.watch){
-            log(`Bundling ${colors.magenta(`initial build`)}`)
-            log(`Running ${colors.magenta(`watch mode`)}`)
-        }
-        else if(args.init && !args.watch){
-            log(`Bundling ${colors.magenta(`initial build`)}`)
-        }
-        else if(!args.init && args.watch){
-            log(`Running ${colors.magenta(`watch mode`)}`)
-        }
-
-
-
-
-        
         let taskRunnerPath = path.join(__dirname, 'taskRunner.js')
-
         let gulpCommands = './node_modules/.bin/gulp skinTasks'
 
-        let skinNameRegex = new RegExp(`([^\/]*)$`, 'g');
-        let skinDir = `${skinDirPath.match(skinNameRegex)}`
+
         let iconPath = function(){
-            
-            if (fileSystem.existsSync(`${skinDirPath}/codekit-icon.png`)) {
-                return `${skinDirPath}/codekit-icon.png`
+            if (fileSystem.existsSync(`${skindirPath}/codekit-icon.png`)) {
+                return `${skindirPath}/codekit-icon.png`
+            }
+            else if (fileSystem.existsSync(`${skindirPath}/hebspack-icon.png`)) {
+                return `${skindirPath}/hebspack-icon.png`
             }
             return `${__dirname}/favicon.png`
         }()
 
-        args.skindir = skinDir.slice(0, -1);
         args.gulpfile=taskRunnerPath
-        args.skinpath=skinDirPath
+        args.skinpath=skindirPath
+        args.skindir = skindir
         args.iconpath=iconPath
 
         Object.entries(args).forEach(entry => {
@@ -212,19 +200,18 @@ function skinsWatch() {
      
         });
 
+        console.log()
         log(`Running executable: ${colors.grey(gulpCommands)}`)
+        console.log()
 
-        const skinpath = args.skinpath
-        const skindir = args.skindir
         let subprocess;
-     
 
         (function killProcess(list,id){
             let lastProcessIndex = getLastProcessIndex(list,id)
 
             if(lastProcessIndex >= 0){
 
-                log(`Restarting '(${colors.cyan(args.skindir)})`)
+                log(`Restarting '(${colors.cyan(skindir)})`)
 
                 processList[lastProcessIndex].subprocess.kill()
                 processList.splice(lastProcessIndex,1);
@@ -234,18 +221,18 @@ function skinsWatch() {
             else{
                 return
             }
-        })(processList,skinpath)
+        })(processList,skindirPath)
 
         subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'], shell: true});
 
-        log(`Starting '(${colors.cyan(args.skindir)}) process pid: ${subprocess.pid}'`)
-        subprocess.skindir=args.skindir
+        log(`Starting '(${colors.cyan(skindir)}) process pid: ${subprocess.pid}'`)
+        subprocess.skindir=skindir
         subprocess.on('message', (msg) => {
             if(msg === 'BROWSER_RELOAD'){
                 browser.reload();
             }
             });
-        processList.push({ subprocess, skindir , skinpath } )
+        processList.push({ subprocess, skindir , skindirPath } )
 
         subprocess.on('exit', function (code, signal) {
             log(`Finished '(${colors.cyan(subprocess.skindir)}) process pid ${subprocess.pid} with code ${code} and signal ${signal}'`);
@@ -262,11 +249,12 @@ function skinsWatch() {
 
 function getLastProcessIndex(array, searchKey) {
 
+    console.log(colors.blue(JSON.stringify(array)))
     let lastIndex = -1;
 
     result = array.reduce((accumulator, currentValue,index)=>{
-    if(currentValue['skinpath'] === searchKey){lastIndex=index}
-            return accumulator = accumulator || (currentValue['skinpath'] === searchKey)
+    if(currentValue['skindirPath'] === searchKey){lastIndex=index}
+            return accumulator = accumulator || (currentValue['skindirPath'] === searchKey)
     },false)
 
     return lastIndex;

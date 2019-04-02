@@ -5,92 +5,81 @@ const requireDir = require('require-dir');
 const configLoader = require('./common/config-loader');
 const log = require('fancy-log');
 const fileSystem = require('fs');
+const notifier = require('node-notifier');
 
 
 const args = minimist(process.argv.slice(2));
 
-let importedTasks;
-let customTasks;
+let importedTasks = {};
+let customTasks = {};
 let defaultTasks = requireDir('./gulp-tasks');
 
 if (fileSystem.existsSync(`${args.skinpath}/gulp-tasks`)) {
      customTasks = requireDir(`${args.skinpath}/gulp-tasks`);
 }
 
+importedTasks = {...customTasks, ...defaultTasks}
 configLoader.loadSkin(`${args.skinpath}`)
 
-if(customTasks !== defaultTasks){
-    importedTasks = {...customTasks, ...defaultTasks}
-}
-else{
-    importedTasks = defaultTasks;
-}
 
+let taskSeries=[];
+args.taskSeries.split(",").forEach((seriesSlug,index)=>{
 
-function initTasks(done) {
-    
-    const tasks = run[args.env].tasks.init.map((taskName) => {
+    taskSeries[index] = function(done){
   
+        const tasks = args[seriesSlug].split(',').map((taskSlug) => {
 
-      if(!importedTasks[taskName]){
-        log(colors.red("Unexisting task"))
-        }
-        else{
+            if(!importedTasks[taskSlug]){
+              }
+              else{
+      
+                  importedTasks[taskSlug].displayName=`(${colors.cyan(args.skindir)}) ${colors.magenta(taskSlug)} task`
+          
+                  return importedTasks[taskSlug]
+              }
+      
+          });
+          let parallelTasks = gulp.parallel(...tasks)
+ 
+          let seriesDoneFunction = (seriesDone) => {
+            notifier.notify({
+                title: `${args.skindir}`,
+                message: `Finished ${seriesSlug} series task`,
+                icon: args.iconpath,
+            });
+            seriesDone();
+            done();
+          }
+          seriesDoneFunction.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(seriesSlug)} series task`
 
-            importedTasks[taskName].displayName=`(${colors.cyan(args.skindir)}) ${colors.magenta(taskName)} task`
-            return importedTasks[taskName]
-        }
+          return gulp.series(parallelTasks, seriesDoneFunction)(); 
+    } 
+    taskSeries[index].displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`${seriesSlug}`)} task`
+})
 
-    });
-    return gulp.series(gulp.parallel(...tasks), (seriesDone) => {
-      seriesDone();
-      done();
-    })(); 
-}
-  
-function watchTasks(done) {
-    const tasks = run[args.env].tasks.watch.map((taskName) => {
-  
-      if(!importedTasks[taskName]){
-        log(colors.red("Unexisting task"))
-        }
-        else{
+/* Inserts reload browser task before watch or at the end of task series */
 
-            importedTasks[taskName].displayName=`(${colors.cyan(args.skindir)}) ${colors.magenta(taskName)} task`
-            return importedTasks[taskName]
-        }
-
-    });
-    return gulp.series(gulp.parallel(...tasks), (seriesDone) => {
-      seriesDone();
-      done();
-    })(); 
-}
-
-function reloadBrowsers(done){
-    if (args.browsersync) {
+if (args.browsersync){
+    let reloadBrowsers = function (done){
         process.send("BROWSER_RELOAD");
+        done()
+    }
+    reloadBrowsers.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`reload-browsers`)} task`
+    
+    numberOfSeries = taskSeries.length
+    if(numberOfSeries>1)
+    {
+       (()=>{
+        for (i = 0; i < numberOfSeries; i++) {
+            if(taskSeries[i].displayName.includes('watch')){
+                taskSeries.splice(i--, 0, reloadBrowsers);
+                return;
+            }
         }
-    done()
+        taskSeries.push(reloadBrowsers)
+        })()
+
+    }
 }
 
-reloadBrowsers.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`reload-browsers`)} task`
-initTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`init-build`)} task`
-watchTasks.displayName = `(${colors.cyan(args.skindir)}) ${colors.magenta(`watch`)} task`
-
-
-let skinTasks 
-
-if(args.init && args.watch){
-    skinTasks= gulp.series(initTasks,reloadBrowsers,watchTasks);
-}
-else if(args.init && !args.watch){
-    skinTasks= gulp.series(initTasks,reloadBrowsers);
-}
-else if(!args.init && args.watch){
-    skinTasks= gulp.series(watchTasks);
-}
-
-
-
-gulp.task('skinTasks', skinTasks);
+gulp.task('skinTasks', gulp.series(...taskSeries),);

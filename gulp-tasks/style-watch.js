@@ -42,7 +42,7 @@ module.exports = function() {
 
         let filePaths = [];
 
-        options[args.env].style.extensions.forEach(extension => {
+        pluginOptions[args.env].style.extensions.forEach(extension => {
             filePaths.push(`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.styleFolder}/**/*${extension}`)
         });
 
@@ -84,7 +84,7 @@ module.exports = function() {
                 /* Prepares file paths to be processed */
 
                 let srcFiles = [];
-                options[args.env].style.extensions.forEach(extension => {
+                pluginOptions[args.env].style.extensions.forEach(extension => {
                     srcFiles.push(`${sourceStyles}/**/*${extension}`)
                 });
 
@@ -146,8 +146,8 @@ module.exports = function() {
                     .pipe(concatDuplicates(run[args.env].style.sourcemaps))
 
                     /* Runs Optimization and Autoprefixing */
-                    .pipe(gulpIf(run[args.env].style.cleanCSS, cleanCSS(options[args.env].style.cleanCSS)))
-                    .pipe(gulpIf(run[args.env].style.autoprefixer, autoprefixer(options[args.env].style.autoprefixer)))
+                    .pipe(gulpIf(run[args.env].style.cleanCSS, cleanCSS(pluginOptions[args.env].style.cleanCSS)))
+                    .pipe(gulpIf(run[args.env].style.autoprefixer, autoprefixer(pluginOptions[args.env].style.autoprefixer)))
 
                     /* Write sourcemaps */
                     .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.write('./')))
@@ -261,7 +261,7 @@ module.exports = function() {
                           }
                         log(`Finished '(${colors.cyan(args.skindir)}) style bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
                         notifier.notify({
-                            title: 'Hebspack',
+                            title: `${args.skindir}`,
                             message: `Styles bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
                             icon: args.iconpath, // Absolute path (doesn't work on balloons)
                         });

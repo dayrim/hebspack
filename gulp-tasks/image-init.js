@@ -48,12 +48,12 @@ module.exports = function() {
 
         .on('end', function() {
 
-          
+             /*
             notifier.notify({
                 title: 'Hebspack',
                 message: `Images bundled in ${args.skindir}`,
                 icon: args.iconpath,
             });
-
+            */
         })
 }

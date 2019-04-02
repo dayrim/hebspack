@@ -35,7 +35,7 @@ configLoader.loadSkin(`${args.skinpath}`)
 
         let filePaths = [];
 
-        options[args.env].image.extensions.forEach(extension => {
+        pluginOptions[args.env].image.extensions.forEach(extension => {
             filePaths.push(`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.imagesFolder}/**/*${extension}`)
         });
 
@@ -74,7 +74,7 @@ configLoader.loadSkin(`${args.skinpath}`)
                     process.send("BROWSER_RELOAD");
                     }
                 notifier.notify({
-                    title: 'Hebspack',
+                    title: `${args.skindir}`,
                     message: `Image bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
                     icon: args.iconpath,
                 });

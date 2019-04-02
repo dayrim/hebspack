@@ -86,12 +86,13 @@ module.exports = function() {
             }))
             .on('end', function() {
     
-              
+                /*
                 notifier.notify({
                     title: 'Hebspack',
                     message: `Scripts bundled in ${args.skindir}`,
                     icon: args.iconpath,
                 });
+                */
     
             })
     }

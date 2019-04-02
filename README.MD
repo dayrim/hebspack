@@ -155,17 +155,21 @@ Custom task creation steps:
 
 - Create 'task-name.js' inside 'gulp-tasks' folder changing the name to suit your task.
 
-- Modify 'hebspack-config.json' by adding 'task-name' to 'init' or 'watch' array according to environmnet.
+- Modify 'taskSeries' field in 'hebspack-config.json' by adding 'task-name' to a new of existing series.
 ```js
 ...
-"tasks":{
-    "init":[ "task-name", "style-init","script-init","image-init","font-init","php-plugins-init"],
-    "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
-},
+    "taskSeries":[
+        {
+        ...
+        "slug": "newSeries",
+            "tasks":[ "task-name"]
+        },
+        }
+    ]
 ...
 ```
 
-- Declare a task in 'task-name.js' choosing one of the following methods:
+- Declare a task inside 'task-name.js' choosing one of the following methods:
 
 #### Callback
 
@@ -228,14 +232,22 @@ module.exports = function() {
 
 ```js
 {
-    /*General settings*/
-    "general":{
-      /*Bundler environment mode*/
-      "environment": "development",
-      /*Bundling for every file*/
-      "init": true,
-      /*Bundles files on change*/
-      "watch": true
+   /*General settings*/
+   },
+   "generalOptions":{
+      /*Bundler environment mode*/    
+      "environment": "production",
+      /*Defines bundler task series to run*/    
+      "taskSeries":[
+         {
+            "slug": "init",
+            "tasks":[ "style-init","script-init","image-init","font-init","php-plugins-init"]
+         },
+         {
+            "slug": "watch",
+            "tasks":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+         }
+      ]
    },
     /*Source and destination folder/file names*/
     "paths": {
@@ -322,11 +334,6 @@ module.exports = function() {
     "run": {
         /*Settings for default environment*/
         "default": {
-            /*List of tasks that are run*/
-            "tasks": {
-                "init": ["style-init", "script-init", "image-init", "font-init", "php-plugins-init"],
-                "watch": ["style-watch", "script-watch", "image-watch", "font-watch", "php-plugins-watch"]
-            },
             /*Script plugins*/
             "script": {
                 "sourcemaps": false,
@@ -344,11 +351,6 @@ module.exports = function() {
         },
         /*Settings for development environment*/
         "development": {
-            /*List of tasks that are run*/
-            "tasks": {
-                "init": ["style-init", "script-init", "image-init", "font-init", "php-plugins-init"],
-                "watch": ["style-watch", "script-watch", "image-watch", "font-watch", "php-plugins-watch"]
-            },
             /*Script plugins*/
             "script": {
                 "sourcemaps": false,
@@ -366,11 +368,6 @@ module.exports = function() {
         },
         /*Settings for production environment*/
         "production": {
-            /*List of tasks that are run*/
-            "tasks": {
-                "init": ["style-init", "script-init", "image-init", "font-init", "php-plugins-init"],
-                "watch": ["style-watch", "script-watch", "image-watch", "font-watch", "php-plugins-watch"]
-            },
             /*Script plugins*/
             "script": {
                 "sourcemaps": true,
@@ -388,7 +385,7 @@ module.exports = function() {
         }
     },
     /*Plugins options*/
-    "options": {
+    "pluginOptions": {
         /*Settings for default environment*/
         "default": {
             /*Script plugins options*/

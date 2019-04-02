@@ -75,7 +75,7 @@ module.exports = function() {
                               {
                                 test: /\.(js|jsx)$/,
                                 loader: "babel-loader",
-                                options: options[args.env].script.babel
+                                options: pluginOptions[args.env].script.babel
                               },
                               {
                                 test: /\.html$/,
@@ -141,12 +141,13 @@ module.exports = function() {
         // server.listen(8080, '127.0.0.1', () => {
         //   console.log('Starting server on http://localhost:8080');
         // });
-
+        /*
         notifier.notify({
           title: "Hebspack",
           message: `Scripts bundled in ${args.skindir}`,
           icon: args.iconpath
         });
+        */
       })
   );
 };

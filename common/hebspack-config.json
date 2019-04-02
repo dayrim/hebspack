@@ -1,8 +1,16 @@
 {  
-   "general":{
+   "generalOptions":{
       "environment": "development",
-      "init": true,
-      "watch": true
+      "taskSeries":[
+         {
+            "slug": "init",
+            "tasks":[ "style-init","script-init","image-init","font-init","php-plugins-init"]
+         },
+         {
+            "slug": "watch",
+            "tasks":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
+         }
+      ]
    },
   "paths":{  
      "src":{  
@@ -63,10 +71,7 @@
   },
   "run":{  
    "default":{  
-      "tasks":{
-          "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
-          "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
-      },
+
       "script":{  
          "sourcemaps":false,
          "uglify":false,
@@ -81,10 +86,7 @@
       }
    },
    "development":{  
-       "tasks":{
-          "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
-          "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
-    },
+
       "script":{  
          "sourcemaps":false,
          "uglify":false,
@@ -99,10 +101,7 @@
       }
    },
    "production":{  
-       "tasks":{
-          "init":[ "style-init","script-init","image-init","font-init","php-plugins-init"],
-          "watch":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
-    },
+
       "script":{  
          "sourcemaps":true,
          "uglify":true,
@@ -117,7 +116,7 @@
       }
    }
 },
-"options":{  
+"pluginOptions":{  
    "default":{  
 
       "script":{  

@@ -54,9 +54,10 @@ if(program.browsersync === true){
   gulpCommand = `${gulpCommand} --browsersync=${port}`
 }
 
+console.log()
 log(`Hebspack version:  ${colors.magenta(version)}`)
 log(`Running executable: ${colors.grey(gulpCommand)}`)
-
+console.log()
 shell.exec(gulpCommand)
 
 

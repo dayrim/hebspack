@@ -76,7 +76,7 @@ const args = minimist(process.argv.slice(2));
                                     srcOrder.push(`${fileName}`);
                                 });
                             }
-                            options[args.env].script.extensions.forEach(extension=>{
+                            pluginOptions[args.env].script.extensions.forEach(extension=>{
                                 srcOrder.push(`*${extension}`);
                             })
                           
@@ -87,8 +87,8 @@ const args = minimist(process.argv.slice(2));
 
                         /* Concat and uglify */
                         .pipe(concat(paths.dist.outputScript))
-                        .pipe(gulpIf(run[args.env].script.babel, babel(options[args.env].script.babel)))
-                        .pipe(gulpIf(run[args.env].script.uglify, uglify(options[args.env].script.uglify)))
+                        .pipe(gulpIf(run[args.env].script.babel, babel(pluginOptions[args.env].script.babel)))
+                        .pipe(gulpIf(run[args.env].script.uglify, uglify(pluginOptions[args.env].script.uglify)))
                         .on('error', function(error) {
                             console.log(colors.red(error));
                             this.emit('end')
@@ -142,12 +142,13 @@ const args = minimist(process.argv.slice(2));
         }))
         .on('end', function() {
 
-          
+             /*
             notifier.notify({
                 title: 'Hebspack',
                 message: `Scripts bundled in ${args.skindir}`,
                 icon: args.iconpath,
             });
+            */
 
         })
 }

@@ -42,7 +42,7 @@ module.exports = function() {
 
         let filePaths = [];
 
-        options[args.env].script.extensions.forEach(extension => {
+        pluginOptions[args.env].script.extensions.forEach(extension => {
             filePaths.push(`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.scriptsFolder}/**/*${extension}`)
         });
 
@@ -75,7 +75,7 @@ module.exports = function() {
 
                 let srcFiles = [];
 
-                options[args.env].script.extensions.forEach(extension => {
+                pluginOptions[args.env].script.extensions.forEach(extension => {
                     srcFiles.push(`${sourceScripts}/**/*${extension}`)
                 });
 
@@ -122,8 +122,8 @@ module.exports = function() {
 
                     /* Concat and uglify */
                     .pipe(concat(paths.dist.outputScript))
-                    .pipe(gulpIf(run[args.env].script.babel, babel(options[args.env].script.babel)))
-                    .pipe(gulpIf(run[args.env].script.uglify, uglify(options[args.env].script.uglify)))
+                    .pipe(gulpIf(run[args.env].script.babel, babel(pluginOptions[args.env].script.babel)))
+                    .pipe(gulpIf(run[args.env].script.uglify, uglify(pluginOptions[args.env].script.uglify)))
                     .on('error', function(error) {
                         console.log(colors.red(error));
                         this.emit('end')
@@ -171,7 +171,7 @@ module.exports = function() {
                             }
                         log(`Finished '(${colors.cyan(args.skindir)}) scripts bundle in: ${colors.cyan(path.relative(args.skinpath, propertyDirDist))}'`);
                         notifier.notify({
-                            title: 'Hebspack',
+                            title: `${args.skindir}`,
                             message: `Scripts bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
                             icon: args.iconpath,
                         });

@@ -102,8 +102,8 @@ module.exports = function() {
                         .pipe(concatDuplicates(run[args.env].style.sourcemaps))
 
                         /* Runs Optimization and Autoprefixing */
-                        .pipe(gulpIf(run[args.env].style.cleanCSS, cleanCSS(options[args.env].style.cleanCSS)))
-                        .pipe(gulpIf(run[args.env].style.autoprefixer, autoprefixer(options[args.env].style.autoprefixer)))
+                        .pipe(gulpIf(run[args.env].style.cleanCSS, cleanCSS(pluginOptions[args.env].style.cleanCSS)))
+                        .pipe(gulpIf(run[args.env].style.autoprefixer, autoprefixer(pluginOptions[args.env].style.autoprefixer)))
 
                         /* Write sourcemaps */
                         .pipe(gulpIf(run[args.env].style.sourcemaps, sourcemaps.write('./')))
@@ -224,12 +224,12 @@ module.exports = function() {
 
                 }))
         })).on('end', function() {
-
+            /*
             notifier.notify({
                 title: 'Hebspack',
                 message: `Styles bundled in ${args.skindir}`,
                 icon: args.iconpath,
             });
-
+            */
         })
 };

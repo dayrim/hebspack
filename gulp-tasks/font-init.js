@@ -49,12 +49,13 @@ configLoader.loadSkin(args.skinpath)
        
         })).on('end', function() {
 
-           
+            /*
             notifier.notify({
                 title: 'Hebspack',
                 message: `Fonts bundled in ${args.skindir}`,
                 icon: args.iconpath,
             });
+            */
 
         })
 

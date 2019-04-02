@@ -34,7 +34,7 @@ module.exports = function() {
 
         let filePaths = [];
 
-        options[args.env].font.extensions.forEach(extension => {
+        pluginOptions[args.env].font.extensions.forEach(extension => {
             filePaths.push(`${skinDir.path}/**/${paths.src.sourceFolder}/**/${paths.src.fontsFolder}/**/*${extension}`)
         });
 
@@ -73,7 +73,7 @@ module.exports = function() {
                     process.send("BROWSER_RELOAD");
                     }
                 notifier.notify({
-                    title: 'Hebspack',
+                    title: `${args.skindir}`,
                     message: `Fonts bundled in: ${path.relative(args.skinpath, propertyDirDist)}`,
                     icon: args.iconpath,
                 });
