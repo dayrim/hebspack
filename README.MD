@@ -233,7 +233,6 @@ module.exports = function() {
 ```js
 {
    /*General settings*/
-   },
    "generalOptions":{
       /*Bundler environment mode*/    
       "environment": "production",
