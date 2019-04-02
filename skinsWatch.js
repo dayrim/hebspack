@@ -143,8 +143,10 @@ function skinsWatch() {
             if(!!generalOptions.taskSeries)
             {args.taskSeries = []                  
             generalOptions.taskSeries.forEach(series => {
-                args.taskSeries.push(series.slug)
-                args[series.slug]=series.tasks
+                if(series.run){
+                    args.taskSeries.push(series.slug)
+                    args[series.slug]=series.tasks
+                }
             })}
             else
             {
@@ -249,7 +251,6 @@ function skinsWatch() {
 
 function getLastProcessIndex(array, searchKey) {
 
-    console.log(colors.blue(JSON.stringify(array)))
     let lastIndex = -1;
 
     result = array.reduce((accumulator, currentValue,index)=>{

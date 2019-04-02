@@ -4,10 +4,12 @@
       "taskSeries":[
          {
             "slug": "init",
+            "run": false,
             "tasks":[ "style-init","script-init","image-init","font-init","php-plugins-init"]
          },
          {
             "slug": "watch",
+            "run": true,
             "tasks":[ "style-watch","script-watch","image-watch","font-watch","php-plugins-watch"]
          }
       ]
