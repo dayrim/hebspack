@@ -108,6 +108,9 @@ function skinsWatch() {
         events: ['add', 'change', 'unlink'],
         ignored: ignoreList,
     }, (configFileObject) => {
+
+
+
         if(configFileObject.event ==='unlink'){
             skinsWatcher.unwatch(configFileObject.path)
             killDuplicateProcesses(processList,skindirPath)
@@ -125,12 +128,14 @@ function skinsWatch() {
         let validationsResult = validateJson({ paths, run ,pluginOptions, generalOptions }, jsonScehma)
         if(!validationsResult.valid){
             console.log()
-            log("Errors in hebspack-config.json validation: ")
+            
+            log(`Error in'(${colors.cyan(skindir)})' hebspack-config.json validation: `)
             
             validationsResult.errors.forEach(error=>{
                 log(colors.red(error));
                
             })
+
             console.log()
             killDuplicateProcesses(processList,skindirPath)
             return
