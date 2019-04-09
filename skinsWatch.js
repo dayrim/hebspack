@@ -5,12 +5,12 @@ const minimist = require("minimist");
 const colors = require('ansi-colors');
 const path = require("path");
 const configLoader = require('./common/config-loader');
-const validateConfig = require('./common/validate-config');
+//const validateConfig = require('./common/validate-config');
 const log = require('fancy-log');
 const watch = require('gulp-watch');
 const { spawn } = require('child_process');
 const browserSync = require('browser-sync')
-
+const validateJson = require('jsonschema').validate;
 
 const args = minimist(process.argv.slice(2));
 
@@ -110,6 +110,8 @@ function skinsWatch() {
     }, (configFileObject) => {
         if(configFileObject.event ==='unlink'){
             skinsWatcher.unwatch(configFileObject.path)
+            killDuplicateProcesses(processList,skindirPath)
+            return
         }
         let skindirPath = path.dirname(configFileObject.path)
         let skinNameRegex = new RegExp(`([^\/]*)$`, 'g');
@@ -117,14 +119,24 @@ function skinsWatch() {
 
 
         configLoader.loadSkin(`${skindirPath}`)
-        let validateMessage = validateConfig(paths, run ,pluginOptions )
-        if(validateMessage){
-            log(colors.red(validateMessage))
+        
+        let jsonScehma = JSON.parse(fileSystem.readFileSync(`${__dirname}/common/hebspack-config-schema.json`))
+
+        let validationsResult = validateJson({ paths, run ,pluginOptions, generalOptions }, jsonScehma)
+        if(!validationsResult.valid){
+            console.log()
+            log("Errors in hebspack-config.json validation: ")
+            
+            validationsResult.errors.forEach(error=>{
+                log(colors.red(error));
+               
+            })
+            console.log()
+            killDuplicateProcesses(processList,skindirPath)
             return
         }
 
-        if (generalOptions)
-        {
+       
             switch (true) {
                 case ((generalOptions.environment==="default")):
                     args.env = "default"
@@ -140,21 +152,14 @@ function skinsWatch() {
                     break;
             }
 
-            if(!!generalOptions.taskSeries)
-            {args.taskSeries = []                  
-            generalOptions.taskSeries.forEach(series => {
-                if(series.run){
-                    args.taskSeries.push(series.slug)
-                    args[series.slug]=series.tasks
-                }
-            })}
-            else
-            {
-                log(colors.red("No task series specified"))
-                return
-            }
+        args.taskSeries = []                  
+        generalOptions.taskSeries.forEach(series => {
+        if(series.run){
+            args.taskSeries.push(series.slug)
+            args[series.slug]=series.tasks
         }
-
+        })
+    
         log(`Executing ${colors.magenta(args.env)} environment mode`)
 
         args.taskSeries.forEach(series => {
@@ -208,23 +213,8 @@ function skinsWatch() {
 
         let subprocess;
 
-        (function killProcess(list,id){
-            let lastProcessIndex = getLastProcessIndex(list,id)
-
-            if(lastProcessIndex >= 0){
-
-                log(`Restarting '(${colors.cyan(skindir)})`)
-
-                processList[lastProcessIndex].subprocess.kill()
-                processList.splice(lastProcessIndex,1);
-
-                return killProcess(list,id)
-            }
-            else{
-                return
-            }
-        })(processList,skindirPath)
-
+        killDuplicateProcesses(processList,skindirPath)
+        
         subprocess= spawn(gulpCommands, {stdio: ['inherit', 'inherit', 'inherit', 'ipc'], shell: true});
 
         log(`Starting '(${colors.cyan(skindir)}) process pid: ${subprocess.pid}'`)
@@ -247,6 +237,23 @@ function skinsWatch() {
 
    
 
+}
+
+function killDuplicateProcesses(list,id){
+    if(list.length>0){
+    let lastProcessIndex = getLastProcessIndex(list,id)
+
+    if(lastProcessIndex >= 0){
+
+        list[lastProcessIndex].subprocess.kill()
+        list.splice(lastProcessIndex,1);
+
+        return killDuplicateProcesses(list,id)
+    }
+    else{
+        return
+    }
+}
 }
 
 function getLastProcessIndex(array, searchKey) {

@@ -1,0 +1,1210 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "generalOptions",
+    "paths",
+    "run",
+    "pluginOptions"
+  ],
+  "properties": {
+    "generalOptions": {
+      "$id": "#/properties/generalOptions",
+      "type": "object",
+      "title": "The Generaloptions Schema",
+      "required": [
+        "environment",
+        "taskSeries"
+      ],
+      "properties": {
+        "environment": {
+          "$id": "#/properties/generalOptions/properties/environment",
+          "type": "string",
+          "title": "The Environment Schema",
+          "default": "",
+          "examples": [
+            "production"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "taskSeries": {
+          "$id": "#/properties/generalOptions/properties/taskSeries",
+          "type": "array",
+          "title": "The Taskseries Schema",
+          "items": {
+            "$id": "#/properties/generalOptions/properties/taskSeries/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "slug",
+              "run",
+              "tasks"
+            ],
+            "properties": {
+              "slug": {
+                "$id": "#/properties/generalOptions/properties/taskSeries/items/properties/slug",
+                "type": "string",
+                "title": "The Slug Schema",
+                "default": "",
+                "examples": [
+                  "init"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "run": {
+                "$id": "#/properties/generalOptions/properties/taskSeries/items/properties/run",
+                "type": "boolean",
+                "title": "The Run Schema",
+                "default": false,
+                "examples": [
+                  true
+                ]
+              },
+              "tasks": {
+                "$id": "#/properties/generalOptions/properties/taskSeries/items/properties/tasks",
+                "type": "array",
+                "title": "The Tasks Schema",
+                "items": {
+                  "$id": "#/properties/generalOptions/properties/taskSeries/items/properties/tasks/items",
+                  "type": "string",
+                  "title": "The Items Schema",
+                  "default": "",
+                  "examples": [
+                    "style-init",
+                    "script-init",
+                    "image-init",
+                    "font-init",
+                    "php-plugins-init"
+                  ],
+                  "pattern": "^(.*)$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "paths": {
+      "$id": "#/properties/paths",
+      "type": "object",
+      "title": "The Paths Schema",
+      "required": [
+        "src",
+        "dist"
+      ],
+      "properties": {
+        "src": {
+          "$id": "#/properties/paths/properties/src",
+          "type": "object",
+          "title": "The Src Schema",
+          "required": [
+            "sourceFolder",
+            "styleFolder",
+            "inlineStyleFolder",
+            "styleFiles",
+            "scriptsFolder",
+            "libFiles",
+            "libFolder",
+            "scriptsEntry",
+            "scriptsFiles",
+            "ignoreSuffix",
+            "imagesFolder",
+            "fontsFolder",
+            "pluginsFolder"
+          ],
+          "properties": {
+            "sourceFolder": {
+              "$id": "#/properties/paths/properties/src/properties/sourceFolder",
+              "type": "string",
+              "title": "The Sourcefolder Schema",
+              "default": "",
+              "examples": [
+                "assets"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "styleFolder": {
+              "$id": "#/properties/paths/properties/src/properties/styleFolder",
+              "type": "string",
+              "title": "The Stylefolder Schema",
+              "default": "",
+              "examples": [
+                "styles"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "inlineStyleFolder": {
+              "$id": "#/properties/paths/properties/src/properties/inlineStyleFolder",
+              "type": "string",
+              "title": "The Inlinestylefolder Schema",
+              "default": "",
+              "examples": [
+                "initial"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "styleFiles": {
+              "$id": "#/properties/paths/properties/src/properties/styleFiles",
+              "type": "array",
+              "title": "The Stylefiles Schema",
+              "items": {
+                "$id": "#/properties/paths/properties/src/properties/styleFiles/items",
+                "type": "string",
+                "title": "The Items Schema",
+                "default": "",
+                "examples": [
+                  "styles.scss",
+                  "initial/styles.scss"
+                ],
+                "pattern": "^(.*)$"
+              }
+            },
+            "scriptsFolder": {
+              "$id": "#/properties/paths/properties/src/properties/scriptsFolder",
+              "type": "string",
+              "title": "The Scriptsfolder Schema",
+              "default": "",
+              "examples": [
+                "scripts"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "libFiles": {
+              "$id": "#/properties/paths/properties/src/properties/libFiles",
+              "type": "array",
+              "title": "The Libfiles Schema",
+              "items": {
+                "$id": "#/properties/paths/properties/src/properties/libFiles/items",
+                "type": "string",
+                "title": "The Items Schema",
+                "default": "",
+                "examples": [
+                  "_jquery.js",
+                  "_jquery.ui.js",
+                  "_cookie.js",
+                  "_json.js",
+                  "_what-input.min.js",
+                  "_validation.js",
+                  "_validation-en.js",
+                  "_hebs.bp.js",
+                  "_swiper.js",
+                  "_galleria.js",
+                  "_variables.js",
+                  "_polyfills.js",
+                  "_ada.js"
+                ],
+                "pattern": "^(.*)$"
+              }
+            },
+            "libFolder": {
+              "$id": "#/properties/paths/properties/src/properties/libFolder",
+              "type": "string",
+              "title": "The Libfolder Schema",
+              "default": "",
+              "examples": [
+                "libraries"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "scriptsEntry": {
+              "$id": "#/properties/paths/properties/src/properties/scriptsEntry",
+              "type": "string",
+              "title": "The Scriptsentry Schema",
+              "default": "",
+              "examples": [
+                "scripts.js"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "scriptsFiles": {
+              "$id": "#/properties/paths/properties/src/properties/scriptsFiles",
+              "type": "array",
+              "title": "The Scriptsfiles Schema",
+              "items": {
+                "$id": "#/properties/paths/properties/src/properties/scriptsFiles/items",
+                "type": "string",
+                "title": "The Items Schema",
+                "default": "",
+                "examples": [
+                  "_common.js",
+                  "_booking.js",
+                  "_photos.js",
+                  "_promotiles.js",
+                  "_events.js",
+                  "_reviews.js",
+                  "_google-maps.js",
+                  "_maps.js",
+                  "_poi.js",
+                  "_galleries.js",
+                  "_pressroom.js",
+                  "_rooms.js",
+                  "_feeds.js",
+                  "_calendar.js"
+                ],
+                "pattern": "^(.*)$"
+              }
+            },
+            "ignoreSuffix": {
+              "$id": "#/properties/paths/properties/src/properties/ignoreSuffix",
+              "type": "string",
+              "title": "The Ignoresuffix Schema",
+              "default": "",
+              "examples": [
+                "scripts.min.js"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "imagesFolder": {
+              "$id": "#/properties/paths/properties/src/properties/imagesFolder",
+              "type": "string",
+              "title": "The Imagesfolder Schema",
+              "default": "",
+              "examples": [
+                "images"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "fontsFolder": {
+              "$id": "#/properties/paths/properties/src/properties/fontsFolder",
+              "type": "string",
+              "title": "The Fontsfolder Schema",
+              "default": "",
+              "examples": [
+                "fonts"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "pluginsFolder": {
+              "$id": "#/properties/paths/properties/src/properties/pluginsFolder",
+              "type": "string",
+              "title": "The Pluginsfolder Schema",
+              "default": "",
+              "examples": [
+                "plugins"
+              ],
+              "pattern": "^(.*)$"
+            }
+          }
+        },
+        "dist": {
+          "$id": "#/properties/paths/properties/dist",
+          "type": "object",
+          "title": "The Dist Schema",
+          "required": [
+            "outputFolder",
+            "styleFolder",
+            "scriptsFolder",
+            "outputScript",
+            "imagesFolder",
+            "fontsFolder"
+          ],
+          "properties": {
+            "outputFolder": {
+              "$id": "#/properties/paths/properties/dist/properties/outputFolder",
+              "type": "string",
+              "title": "The Outputfolder Schema",
+              "default": "",
+              "examples": [
+                "dist"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "styleFolder": {
+              "$id": "#/properties/paths/properties/dist/properties/styleFolder",
+              "type": "string",
+              "title": "The Stylefolder Schema",
+              "default": "",
+              "examples": [
+                "styles"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "scriptsFolder": {
+              "$id": "#/properties/paths/properties/dist/properties/scriptsFolder",
+              "type": "string",
+              "title": "The Scriptsfolder Schema",
+              "default": "",
+              "examples": [
+                "scripts"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "outputScript": {
+              "$id": "#/properties/paths/properties/dist/properties/outputScript",
+              "type": "string",
+              "title": "The Outputscript Schema",
+              "default": "",
+              "examples": [
+                "scripts.min.js"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "imagesFolder": {
+              "$id": "#/properties/paths/properties/dist/properties/imagesFolder",
+              "type": "string",
+              "title": "The Imagesfolder Schema",
+              "default": "",
+              "examples": [
+                "images"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "fontsFolder": {
+              "$id": "#/properties/paths/properties/dist/properties/fontsFolder",
+              "type": "string",
+              "title": "The Fontsfolder Schema",
+              "default": "",
+              "examples": [
+                "fonts"
+              ],
+              "pattern": "^(.*)$"
+            }
+          }
+        }
+      }
+    },
+    "run": {
+      "$id": "#/properties/run",
+      "type": "object",
+      "title": "The Run Schema",
+      "required": [
+        "default",
+        "development",
+        "production"
+      ],
+      "properties": {
+        "default": {
+          "$id": "#/properties/run/properties/default",
+          "type": "object",
+          "title": "The Default Schema",
+          "required": [
+            "script",
+            "style"
+          ],
+          "properties": {
+            "script": {
+              "$id": "#/properties/run/properties/default/properties/script",
+              "type": "object",
+              "title": "The Script Schema",
+              "required": [
+                "sourcemaps",
+                "uglify",
+                "stripDebug",
+                "babel"
+              ],
+              "properties": {
+                "sourcemaps": {
+                  "$id": "#/properties/run/properties/default/properties/script/properties/sourcemaps",
+                  "type": "boolean",
+                  "title": "The Sourcemaps Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "uglify": {
+                  "$id": "#/properties/run/properties/default/properties/script/properties/uglify",
+                  "type": "boolean",
+                  "title": "The Uglify Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "stripDebug": {
+                  "$id": "#/properties/run/properties/default/properties/script/properties/stripDebug",
+                  "type": "boolean",
+                  "title": "The Stripdebug Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "babel": {
+                  "$id": "#/properties/run/properties/default/properties/script/properties/babel",
+                  "type": "boolean",
+                  "title": "The Babel Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                }
+              }
+            },
+            "style": {
+              "$id": "#/properties/run/properties/default/properties/style",
+              "type": "object",
+              "title": "The Style Schema",
+              "required": [
+                "sourcemaps",
+                "autoprefixer",
+                "extractMedia",
+                "cleanCSS"
+              ],
+              "properties": {
+                "sourcemaps": {
+                  "$id": "#/properties/run/properties/default/properties/style/properties/sourcemaps",
+                  "type": "boolean",
+                  "title": "The Sourcemaps Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "autoprefixer": {
+                  "$id": "#/properties/run/properties/default/properties/style/properties/autoprefixer",
+                  "type": "boolean",
+                  "title": "The Autoprefixer Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "extractMedia": {
+                  "$id": "#/properties/run/properties/default/properties/style/properties/extractMedia",
+                  "type": "boolean",
+                  "title": "The Extractmedia Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "cleanCSS": {
+                  "$id": "#/properties/run/properties/default/properties/style/properties/cleanCSS",
+                  "type": "boolean",
+                  "title": "The Cleancss Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "development": {
+          "$id": "#/properties/run/properties/development",
+          "type": "object",
+          "title": "The Development Schema",
+          "required": [
+            "script",
+            "style"
+          ],
+          "properties": {
+            "script": {
+              "$id": "#/properties/run/properties/development/properties/script",
+              "type": "object",
+              "title": "The Script Schema",
+              "required": [
+                "sourcemaps",
+                "uglify",
+                "stripDebug",
+                "babel"
+              ],
+              "properties": {
+                "sourcemaps": {
+                  "$id": "#/properties/run/properties/development/properties/script/properties/sourcemaps",
+                  "type": "boolean",
+                  "title": "The Sourcemaps Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "uglify": {
+                  "$id": "#/properties/run/properties/development/properties/script/properties/uglify",
+                  "type": "boolean",
+                  "title": "The Uglify Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "stripDebug": {
+                  "$id": "#/properties/run/properties/development/properties/script/properties/stripDebug",
+                  "type": "boolean",
+                  "title": "The Stripdebug Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "babel": {
+                  "$id": "#/properties/run/properties/development/properties/script/properties/babel",
+                  "type": "boolean",
+                  "title": "The Babel Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                }
+              }
+            },
+            "style": {
+              "$id": "#/properties/run/properties/development/properties/style",
+              "type": "object",
+              "title": "The Style Schema",
+              "required": [
+                "sourcemaps",
+                "extractMedia",
+                "cleanCSS",
+                "autoprefixer"
+              ],
+              "properties": {
+                "sourcemaps": {
+                  "$id": "#/properties/run/properties/development/properties/style/properties/sourcemaps",
+                  "type": "boolean",
+                  "title": "The Sourcemaps Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "extractMedia": {
+                  "$id": "#/properties/run/properties/development/properties/style/properties/extractMedia",
+                  "type": "boolean",
+                  "title": "The Extractmedia Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "cleanCSS": {
+                  "$id": "#/properties/run/properties/development/properties/style/properties/cleanCSS",
+                  "type": "boolean",
+                  "title": "The Cleancss Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "autoprefixer": {
+                  "$id": "#/properties/run/properties/development/properties/style/properties/autoprefixer",
+                  "type": "boolean",
+                  "title": "The Autoprefixer Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "production": {
+          "$id": "#/properties/run/properties/production",
+          "type": "object",
+          "title": "The Production Schema",
+          "required": [
+            "script",
+            "style"
+          ],
+          "properties": {
+            "script": {
+              "$id": "#/properties/run/properties/production/properties/script",
+              "type": "object",
+              "title": "The Script Schema",
+              "required": [
+                "sourcemaps",
+                "uglify",
+                "stripDebug",
+                "babel"
+              ],
+              "properties": {
+                "sourcemaps": {
+                  "$id": "#/properties/run/properties/production/properties/script/properties/sourcemaps",
+                  "type": "boolean",
+                  "title": "The Sourcemaps Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "uglify": {
+                  "$id": "#/properties/run/properties/production/properties/script/properties/uglify",
+                  "type": "boolean",
+                  "title": "The Uglify Schema",
+                  "default": false,
+                  "examples": [
+                    true
+                  ]
+                },
+                "stripDebug": {
+                  "$id": "#/properties/run/properties/production/properties/script/properties/stripDebug",
+                  "type": "boolean",
+                  "title": "The Stripdebug Schema",
+                  "default": false,
+                  "examples": [
+                    true
+                  ]
+                },
+                "babel": {
+                  "$id": "#/properties/run/properties/production/properties/script/properties/babel",
+                  "type": "boolean",
+                  "title": "The Babel Schema",
+                  "default": false,
+                  "examples": [
+                    true
+                  ]
+                }
+              }
+            },
+            "style": {
+              "$id": "#/properties/run/properties/production/properties/style",
+              "type": "object",
+              "title": "The Style Schema",
+              "required": [
+                "sourcemaps",
+                "extractMedia",
+                "cleanCSS",
+                "autoprefixer"
+              ],
+              "properties": {
+                "sourcemaps": {
+                  "$id": "#/properties/run/properties/production/properties/style/properties/sourcemaps",
+                  "type": "boolean",
+                  "title": "The Sourcemaps Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "extractMedia": {
+                  "$id": "#/properties/run/properties/production/properties/style/properties/extractMedia",
+                  "type": "boolean",
+                  "title": "The Extractmedia Schema",
+                  "default": false,
+                  "examples": [
+                    false
+                  ]
+                },
+                "cleanCSS": {
+                  "$id": "#/properties/run/properties/production/properties/style/properties/cleanCSS",
+                  "type": "boolean",
+                  "title": "The Cleancss Schema",
+                  "default": false,
+                  "examples": [
+                    true
+                  ]
+                },
+                "autoprefixer": {
+                  "$id": "#/properties/run/properties/production/properties/style/properties/autoprefixer",
+                  "type": "boolean",
+                  "title": "The Autoprefixer Schema",
+                  "default": false,
+                  "examples": [
+                    true
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "pluginOptions": {
+      "$id": "#/properties/pluginOptions",
+      "type": "object",
+      "title": "The Pluginoptions Schema",
+      "required": [
+        "default",
+        "development",
+        "production"
+      ],
+      "properties": {
+        "default": {
+          "$id": "#/properties/pluginOptions/properties/default",
+          "type": "object",
+          "title": "The Default Schema",
+          "required": [
+            "script",
+            "style",
+            "php_plugin",
+            "image",
+            "font"
+          ],
+          "properties": {
+            "script": {
+              "$id": "#/properties/pluginOptions/properties/default/properties/script",
+              "type": "object",
+              "title": "The Script Schema",
+              "required": [
+                "extensions",
+                "uglify",
+                "babel"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/script/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/default/properties/script/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".js"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                },
+                "uglify": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/script/properties/uglify",
+                  "type": "object",
+                  "title": "The Uglify Schema"
+                },
+                "babel": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/script/properties/babel",
+                  "type": "object",
+                  "title": "The Babel Schema"
+                }
+              }
+            },
+            "style": {
+              "$id": "#/properties/pluginOptions/properties/default/properties/style",
+              "type": "object",
+              "title": "The Style Schema",
+              "required": [
+                "extensions",
+                "cleanCSS",
+                "autoprefixer"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/style/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/default/properties/style/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".scss"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                },
+                "cleanCSS": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/style/properties/cleanCSS",
+                  "type": "object",
+                  "title": "The Cleancss Schema"
+                },
+                "autoprefixer": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/style/properties/autoprefixer",
+                  "type": "object",
+                  "title": "The Autoprefixer Schema"
+                }
+              }
+            },
+            "php_plugin": {
+              "$id": "#/properties/pluginOptions/properties/default/properties/php_plugin",
+              "type": "object",
+              "title": "The Php_plugin Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/php_plugin/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/default/properties/php_plugin/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".php"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "image": {
+              "$id": "#/properties/pluginOptions/properties/default/properties/image",
+              "type": "object",
+              "title": "The Image Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/image/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/default/properties/image/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".gif",
+                      ".png",
+                      ".jpg",
+                      ".jpeg",
+                      ".ai",
+                      ".svg",
+                      ".psd"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "font": {
+              "$id": "#/properties/pluginOptions/properties/default/properties/font",
+              "type": "object",
+              "title": "The Font Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/default/properties/font/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/default/properties/font/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".woff",
+                      ".woff2",
+                      ".ttf",
+                      ".eot",
+                      ".svg"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "development": {
+          "$id": "#/properties/pluginOptions/properties/development",
+          "type": "object",
+          "title": "The Development Schema",
+          "required": [
+            "script",
+            "style",
+            "image",
+            "font",
+            "php_plugin"
+          ],
+          "properties": {
+            "script": {
+              "$id": "#/properties/pluginOptions/properties/development/properties/script",
+              "type": "object",
+              "title": "The Script Schema",
+              "required": [
+                "extensions",
+                "uglify",
+                "babel"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/script/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/development/properties/script/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".js"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                },
+                "uglify": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/script/properties/uglify",
+                  "type": "object",
+                  "title": "The Uglify Schema"
+                },
+                "babel": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/script/properties/babel",
+                  "type": "object",
+                  "title": "The Babel Schema"
+                }
+              }
+            },
+            "style": {
+              "$id": "#/properties/pluginOptions/properties/development/properties/style",
+              "type": "object",
+              "title": "The Style Schema",
+              "required": [
+                "extensions",
+                "cleanCSS"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/style/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/development/properties/style/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".scss"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                },
+                "cleanCSS": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/style/properties/cleanCSS",
+                  "type": "object",
+                  "title": "The Cleancss Schema"
+                }
+              }
+            },
+            "image": {
+              "$id": "#/properties/pluginOptions/properties/development/properties/image",
+              "type": "object",
+              "title": "The Image Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/image/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/development/properties/image/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".gif",
+                      ".png",
+                      ".jpg",
+                      ".jpeg",
+                      ".ai",
+                      ".svg",
+                      ".psd"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "font": {
+              "$id": "#/properties/pluginOptions/properties/development/properties/font",
+              "type": "object",
+              "title": "The Font Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/font/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/development/properties/font/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".woff",
+                      ".woff2",
+                      ".ttf",
+                      ".eot",
+                      ".svg"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "php_plugin": {
+              "$id": "#/properties/pluginOptions/properties/development/properties/php_plugin",
+              "type": "object",
+              "title": "The Php_plugin Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/development/properties/php_plugin/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/development/properties/php_plugin/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".php"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "production": {
+          "$id": "#/properties/pluginOptions/properties/production",
+          "type": "object",
+          "title": "The Production Schema",
+          "required": [
+            "script",
+            "style",
+            "image",
+            "font",
+            "php_plugin"
+          ],
+          "properties": {
+            "script": {
+              "$id": "#/properties/pluginOptions/properties/production/properties/script",
+              "type": "object",
+              "title": "The Script Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/production/properties/script/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/production/properties/script/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".js"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "style": {
+              "$id": "#/properties/pluginOptions/properties/production/properties/style",
+              "type": "object",
+              "title": "The Style Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/production/properties/style/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/production/properties/style/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".scss"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "image": {
+              "$id": "#/properties/pluginOptions/properties/production/properties/image",
+              "type": "object",
+              "title": "The Image Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/production/properties/image/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/production/properties/image/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".gif",
+                      ".png",
+                      ".jpg",
+                      ".jpeg",
+                      ".ai",
+                      ".svg",
+                      ".psd"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "font": {
+              "$id": "#/properties/pluginOptions/properties/production/properties/font",
+              "type": "object",
+              "title": "The Font Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/production/properties/font/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/production/properties/font/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".woff",
+                      ".woff2",
+                      ".ttf",
+                      ".eot",
+                      ".svg"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            },
+            "php_plugin": {
+              "$id": "#/properties/pluginOptions/properties/production/properties/php_plugin",
+              "type": "object",
+              "title": "The Php_plugin Schema",
+              "required": [
+                "extensions"
+              ],
+              "properties": {
+                "extensions": {
+                  "$id": "#/properties/pluginOptions/properties/production/properties/php_plugin/properties/extensions",
+                  "type": "array",
+                  "title": "The Extensions Schema",
+                  "items": {
+                    "$id": "#/properties/pluginOptions/properties/production/properties/php_plugin/properties/extensions/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      ".php"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

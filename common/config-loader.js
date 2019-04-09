@@ -4,6 +4,8 @@ const glob = require("glob");
 const log = require("fancy-log");
 const colors = require("ansi-colors");
 const path = require("path");
+const validateJson = require('jsonschema').validate;
+
 /* Set global config*/
 let globalSkinConfig;
 let globalHebsConfig;
@@ -14,7 +16,9 @@ function loadSkin(skinDirectory) {
         rawData = fileSystem.readFileSync(
             `${skinDirectory}/hebspack-config.json`
         );
+
         globalSkinConfig = JSON.parse(rawData);
+        
         return ({ paths, run ,pluginOptions, generalOptions } = globalSkinConfig);
     }
     else {
