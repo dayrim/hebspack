@@ -1,5 +1,23 @@
 module.exports = function(paths, run, options) {
     if (
+        generalOptions === "" ||
+        !generalOptions
+    ) {
+        return 'Config error: General options is required'
+    }
+    if (
+        generalOptions.environment === "" ||
+        !generalOptions.environment
+    ) {
+        return 'Config error: Environment option is required'
+    }
+    if (
+        generalOptions.taskSeries === "" ||
+        !generalOptions.taskSeries
+    ) {
+        return 'Config error: Task series options is required'
+    }
+    if (
         paths.src.sourceFolder === "" ||
         !paths.src.sourceFolder
     ) {
