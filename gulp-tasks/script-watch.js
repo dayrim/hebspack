@@ -110,7 +110,7 @@ module.exports = function() {
                                 srcOrder.push(`${fileName}`);
                             });
                         }
-                        options[args.env].script.extensions.forEach(extension=>{
+                        pluginOptions[args.env].script.extensions.forEach(extension=>{
                             srcOrder.push(`*${extension}`);
                         })
                         
